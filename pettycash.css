@@ -1,0 +1,25 @@
+.done-true {
+  text-decoration: line-through;
+  color: grey;
+}
+
+#load {
+    display: none;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 3px;
+}
+
+ul {
+    padding-left: 0;
+}
+
+#goals {
+    display: none;
+}
+
+#delete {
+    color: red;
+}

@@ -1,0 +1,1 @@
+angular.module('PettyCash', ['720kb.datepicker']);
