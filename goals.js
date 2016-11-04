@@ -43,7 +43,7 @@ angular.module('PettyCash').controller('GoalsController', function() {
     };
     
     goalList.loadGoals = function() {
-        goalList.goals = goals;
+        angular.copy(goals, goalList.goals);
     }
     
     goalList.delete = function(goal) {
@@ -53,7 +53,7 @@ angular.module('PettyCash').controller('GoalsController', function() {
     }
     
     function Goal(description, endDate, amount, priority) {
-        this.name = '';
+        this.name = Date.now().toString();
         this.description = description;
         this.startDate = today;
         this.endDate = endDate;
@@ -63,10 +63,7 @@ angular.module('PettyCash').controller('GoalsController', function() {
     }
     
     function cleanForm() {
-        goalList.newDes = '';
-        goalList.newEnd = '';
-        goalList.newVal = '';
-        goalList.newPrty = '';
+        document.getElementById('goalForm').reset();
     }
     
 }).filter('priority', function() {

@@ -32,15 +32,16 @@
                 <li ng-repeat="goal in goalList.goals track by $index">
                     <label>
                         <input id="delete" type="button" ng-click="goalList.delete(goal)" value="X">
-                        <span class="done-{{goal.done}}">{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}**** {{goal.priority | priority}}</span>
+                        <span class="done-{{goal.done}}">{{goal.name}}****{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}**** {{goal.priority | priority}}</span>
                     </label>
                 </li>
             </ul>
-            <form ng-submit="goalList.addGoal()">
+            <form id="goalForm" ng-submit="goalList.addGoal()">
                 <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here"><br>
+                <span>
                 <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
                 <datepicker date-format="longDate" ng-style="{width: 146 + 'px'}">
-                    <input ng-model="goalList.newEnd" type="text"/><br>
+                    <input ng-model="goalList.newEnd" type="text"/>
                 </datepicker><br>
                 <select ng-model="goalList.newPrty" name="priority">
                     <option value="">-- choose priority --</option>
