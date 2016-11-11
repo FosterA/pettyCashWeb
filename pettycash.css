@@ -3,7 +3,15 @@
   color: grey;
 }
 
-#load {
+#loadGoals {
+    display: none;
+}
+
+#loadTrans {
+    display: none;
+}
+
+#addTran {
     display: none;
 }
 
@@ -22,4 +30,8 @@ ul {
 
 #delete {
     color: red;
+}
+
+#petGame {
+    float: left;
 }

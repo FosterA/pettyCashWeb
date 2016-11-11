@@ -1,12 +1,14 @@
 <!doctype html>
 <html ng-app="PettyCash">
     <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.6/angular-datepicker.min.js"></script>
         <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
         <script src="ckconfig.js"></script>
         <script src="loadCtrls.js"></script>
         <script src="goals.js"></script>
+        <script src="pet.js"></script>
         <script src="transactions.js"></script>
         <script src="authentication.js"></script>
         <script src="query.js"></script>
@@ -15,25 +17,25 @@
     </head>
     <body>
 
-      <div>
-        <h2 id="displayed-username"></h2>
-        <div id="apple-sign-in-button">
-           <span id="username"></span>
-         </div>
-         <div id="apple-sign-out-button"></div>
-      </div>
-      <hr></hr>
+        <div>
+            <h2 id="displayed-username"></h2>
+            <div id="apple-sign-in-button">
+                <span id="username"></span>
+            </div>
+            <div id="apple-sign-out-button"></div>
+        </div>
+        <hr></hr>
 
         <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
             [ <span>{{goalList.remaining()}} of {{goalList.goals.length}} remaining</span> ]
-            <input type="button" id="load" ng-click="goalList.loadGoals()" value="Load Goals"></input>
+            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals"></input>
             <ul class="unstyled">
                 <li ng-repeat="goal in goalList.goals track by $index">
-                    <label>
+                    <span>
                         <input id="delete" type="button" ng-click="goalList.delete(goal)" value="X">
-                        <span class="done-{{goal.done}}">{{goal.name}}****{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}**** {{goal.priority | priority}}</span>
-                    </label>
+                        <span>{{goal.name}}****{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}**** {{goal.priority | priority}}</span>
+                    </span>
                 </li>
             </ul>
             <form id="goalForm" ng-submit="goalList.addGoal()">
@@ -51,26 +53,22 @@
                 <input class="btn-primary" type="submit" value="add">
             </form>
         </div>
-
-        <h2>Transactions</h2>
-        <div id="transactions" ng-controller="TransactionsController as transactions">
-            [ <span>{{transactions.remaining()}} of {{transactions.trans.length}} remaining</span> ]
-            <input type="button" ng-click="transactions.archive()" value="Archive"></input>
+        
+        <div id="petGame">
+            <h2>Pet Game</h2>
+        </div>
+        <div id="transactions" ng-controller="TransactionsController as transList">
+            <h2>Transactions</h2>
+            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions"></input>
+            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction"></input>
             <ul class="unstyled">
-                <li ng-repeat="tran in transactions.trans">
-                    <label class="checkbox">
-                        <input type="checkbox" ng-model="tran.done">
-                        <span class="done-{{tran.done}}">{{tran.description}} {{tran.amount}} {{tran.date}}</span>
-                    </label>
+                <li ng-repeat="transaction in transList.transactions track by $index">
+                    <span>
+                        <span>{{transaction.name}}****{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.endDate | date:'longDate'}}**** {{transaction.priority | priority}}</span>
+                    </span>
                 </li>
             </ul>
-            <form ng-submit="transactions.addTran()">
-                <input type="text" ng-model="transactions.tranDes" size="30" placeholder="add new transaction here"><br>
-                <input type="number" ng-model="transactions.tranVal" size="30" placeholder="transaction amount"><br>
-                <input type="text" ng-model="transactions.tranDate" size="30" placeholder="date"><br>
-                <input class="btn-primary" type="submit" value="add">
-            </form>
         </div>
-
+        
     </body>
 </html>

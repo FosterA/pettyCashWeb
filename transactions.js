@@ -1,38 +1,47 @@
 angular.module('PettyCash').controller('TransactionsController', function() {
-    var transactions = this;
-    transactions.trans = [{
-        id:'1',
-        description:'test transaction',
-        date:'11-26-16',
-        amount:1000,
-        done:false}];
 
-    transactions.addTran = function() {
-      transactions.trans.push({
-                id:'2',
-                description:transactions.tranDes,
-                date:transactions.tranDate,
-                amount:transactions.tranVal,
-                done:false});
+    var transList = this;
+    transList.transactions = [];
+    var today = Date.parse(new Date());
+ 
+    transList.addTransaction = function() {
+        
+        var newTransaction = new Transaction(tranDes, tranVal);
+        transList.transactions.push(newTransaction);
+        saveRecord(newTransaction, 'Transaction');
+        cleanForm();
 
-      transactions.tranDes = '';
-      transactions.tranVal = 0;
-      transactions.tranDate = '';
     };
-
-    transactions.remaining = function() {
+ 
+    transList.remaining = function() {
       var count = 0;
-      angular.forEach(transactions.trans, function(tran) {
-        count += tran.done ? 0 : 1;
+      angular.forEach(transList.goals, function(transaction) {
+        count += transaction.done ? 0 : 1;
       });
       return count;
     };
-
-    transactions.archive = function() {
-      var oldTrans = transactions.trans;
-      transactions.trans = [];
-      angular.forEach(oldTrans, function(tran) {
-        if (!tran.done) transactions.trans.push(tran);
+ 
+    transList.archive = function() {
+      var oldTransactions = transList.transactions;
+      transList.transactions = [];
+      angular.forEach(oldTransactions, function(transaction) {
+        if (!transaction.done) transList.transactions.push(transaction);
       });
     };
+    
+    transList.loadTransactions = function() {
+        angular.copy(transactions, transList.transactions);
+    }
+    
+    function Transaction(description, amount) {
+        this.name = Date.now().toString();
+        this.description = description;
+        this.date = today;
+        this.amount = amount;
+    }
+    
+    function cleanForm() {
+        document.getElementById('goalForm').reset();
+    }
+    
 });

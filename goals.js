@@ -21,7 +21,7 @@ angular.module('PettyCash').controller('GoalsController', function() {
         } else {
             var newGoal = new Goal(goalList.newDes, end, goalList.newVal, goalList.newPrty);
             goalList.goals.push(newGoal);
-            saveGoal(newGoal);
+            saveRecord(newGoal, 'Goal');
             cleanForm();
         }
     };
@@ -49,7 +49,7 @@ angular.module('PettyCash').controller('GoalsController', function() {
     goalList.delete = function(goal) {
         var index = goalList.goals.indexOf(goal);
         goalList.goals.splice(index, 1);
-        deleteGoal(goal);
+        deleteRecord(goal);
     }
     
     function Goal(description, endDate, amount, priority) {
@@ -59,7 +59,6 @@ angular.module('PettyCash').controller('GoalsController', function() {
         this.endDate = endDate;
         this.amount = amount;
         this.priority = parseInt(priority);
-        this.done = false;
     }
     
     function cleanForm() {
