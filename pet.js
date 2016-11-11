@@ -4,14 +4,14 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'petGame', {preload: preload
 
 function preload() {
     //phaser assets
-    game.load.image('mushroom', 'assets/mushroom2.png');
-    game.load.image('phaser', 'assets/phaser-dude.png');
-    game.load.spritesheet('button', 'assets/button_sprite_sheet.png', 193, 71);
+    game.load.image('mushroom', 'content/assets/mushroom2.png');
+    game.load.image('phaser', 'content/assets/phaser-dude.png');
+    game.load.spritesheet('button', 'content/assets/button_sprite_sheet.png', 193, 71);
     //custom and downloaded assets
-    game.load.image('empty', 'assets/bowlEmpty.png');
-    game.load.image('full', 'assets/bowlFull.png');
-    game.load.image('yes', 'assets/yes.png');
-    game.load.image('no', 'assets/no.png');
+    game.load.image('empty', 'content/assets/bowlEmpty.png');
+    game.load.image('full', 'content/assets/bowlFull.png');
+    game.load.image('yes', 'content/assets/yes.png');
+    game.load.image('no', 'content/assets/no.png');
 
 }
 
