@@ -1,47 +1,29 @@
 angular.module('PettyCash').controller('TransactionsController', function() {
-
-    var transList = this;
-    transList.transactions = [];
-    var today = Date.parse(new Date());
+  
+    var transList = this; //scope
+    transList.transactions = []; //create transactions array on scope
+    var today = Date.parse(new Date()); //today's date
  
     transList.addTransaction = function() {
-        
-        var newTransaction = new Transaction(tranDes, tranVal);
-        transList.transactions.push(newTransaction);
-        saveRecord(newTransaction, 'Transaction');
-        cleanForm();
-
-    };
- 
-    transList.remaining = function() {
-      var count = 0;
-      angular.forEach(transList.goals, function(transaction) {
-        count += transaction.done ? 0 : 1;
-      });
-      return count;
-    };
- 
-    transList.archive = function() {
-      var oldTransactions = transList.transactions;
-      transList.transactions = [];
-      angular.forEach(oldTransactions, function(transaction) {
-        if (!transaction.done) transList.transactions.push(transaction);
-      });
+        var newTransaction = new Transaction(tranDes, tranVal); //create new transaction object
+        transList.transactions.unshift(newTransaction); //add new transaction to front of array
+        saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
     };
     
     transList.loadTransactions = function() {
-        angular.copy(transactions, transList.transactions);
+        angular.copy(transactions, transList.transactions); //copy fetched transactions to controller
+    }
+    
+    transList.delete = function(transaction, index) {
+        transList.transactions.splice(index, 1); //remove transaction from array
+        deleteRecord(transaction); //delete transaction from cloudkit
     }
     
     function Transaction(description, amount) {
-        this.name = Date.now().toString();
+        this.name = Date.now().toString(); //timestamp as unique id
         this.description = description;
-        this.date = today;
+        this.date = today; //transaction occured today
         this.amount = amount;
-    }
-    
-    function cleanForm() {
-        document.getElementById('goalForm').reset();
     }
     
 });

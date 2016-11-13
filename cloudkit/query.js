@@ -83,7 +83,11 @@ function fetchRecords() {
     };
     
     var transactionQuery = {
-        recordType: 'Transaction'
+        recordType: 'Transaction',
+        sortBy: [{
+            fieldName: 'date',
+            ascending: false
+        }]
     }
 
     privateDB.performQuery(goalQuery).then(function(response) {
@@ -101,8 +105,9 @@ function fetchRecords() {
         if (response.hasErrors) {
             throw response.errors[0];
         } else {
+            window.alert(response.records.length);
             angular.forEach(response.records, function(record, key) {
-                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value}
+                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value}  
                 transactions.push(transaction);
             });
         }

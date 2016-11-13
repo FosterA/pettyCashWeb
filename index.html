@@ -28,12 +28,11 @@
 
         <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
-            [ <span>{{goalList.remaining()}} of {{goalList.goals.length}} remaining</span> ]
             <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals"></input>
             <ul class="unstyled">
                 <li ng-repeat="goal in goalList.goals track by $index">
                     <span>
-                        <input id="delete" type="button" ng-click="goalList.delete(goal)" value="X">
+                        <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
                         <span>{{goal.name}}****{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}</span>
                     </span>
                 </li>
@@ -64,6 +63,7 @@
             <ul class="unstyled">
                 <li ng-repeat="transaction in transList.transactions track by $index">
                     <span>
+                        <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
                         <span>{{transaction.name}}****{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
                     </span>
                 </li>
