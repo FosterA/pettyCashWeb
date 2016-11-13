@@ -116,12 +116,6 @@ function fetchRecords() {
     setTimeout(function(){
         document.getElementById('loadGoals').click();
         document.getElementById('loadTrans').click();
-    }, 1000);
+    }, 1500);
     
 }
-
-fetchRecords();
-
-setTimeout(function(){
-    document.getElementById('goals').style.display = "inline";
-}, 1000);

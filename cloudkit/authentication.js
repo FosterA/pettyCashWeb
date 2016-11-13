@@ -7,6 +7,7 @@ function demoSetUpAuth() {
         displayUserName(name.givenName + ' ' + name.familyName);
       } else {
         displayUserName('User record name: ' + userIdentity.userRecordName);
+        fetchRecords(); //fetch goals and transactions after login
       }
       container
         .whenUserSignsOut()

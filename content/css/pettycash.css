@@ -24,10 +24,6 @@ ul {
     padding-left: 0;
 }
 
-#goals {
-    display: none;
-}
-
 #delete {
     color: red;
 }
