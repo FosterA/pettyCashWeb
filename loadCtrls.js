@@ -1,1 +1,1 @@
-angular.module('PettyCash', ['720kb.datepicker']);
+var pettycash = angular.module('PettyCash', ['720kb.datepicker']);

@@ -98,6 +98,7 @@ function fetchRecords() {
                 var goal = {name:record.recordName, description:record.fields.description.value, startDate:record.fields.startDate.value, endDate:record.fields.endDate.value, amount:record.fields.amount.value, priority:record.fields.priority.value}
                 goals.push(goal);
             });
+            document.getElementById('loadGoals').click();
         }
     });
     
@@ -109,13 +110,8 @@ function fetchRecords() {
                 var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value}  
                 transactions.push(transaction);
             });
+            document.getElementById('loadTrans').click();
         }
     });
-
-
-    setTimeout(function(){
-        document.getElementById('loadGoals').click();
-        document.getElementById('loadTrans').click();
-    }, 1500);
     
 }

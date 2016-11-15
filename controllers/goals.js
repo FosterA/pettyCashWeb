@@ -1,4 +1,4 @@
-angular.module('PettyCash').controller('GoalsController', function() {
+pettycash.controller('GoalsController', function() {
     
     var goalList = this; //scope
     goalList.goals = []; //goals array on scope

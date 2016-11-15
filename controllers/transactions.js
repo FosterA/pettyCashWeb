@@ -1,4 +1,4 @@
-angular.module('PettyCash').controller('TransactionsController', function() {
+pettycash.controller('TransactionsController', function() {
   
     var transList = this; //scope
     transList.transactions = []; //create transactions array on scope
