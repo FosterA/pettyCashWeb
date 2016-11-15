@@ -45,7 +45,7 @@ function saveRecord(record, recordType) {
         };
     }
     
-    privateDB.saveRecords(query).then(function(response) {
+    privateDB.saveRecords(query, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             var ckError = response.errors[0];
             throw ckError;
@@ -58,7 +58,7 @@ function saveRecord(record, recordType) {
 
 function deleteRecord(removed) {
     
-    privateDB.deleteRecords(removed.name).then(function(response) {
+    privateDB.deleteRecords(removed.name, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             var ckError = response.errors[0];
             throw ckError;
@@ -90,7 +90,7 @@ function fetchRecords() {
         }]
     }
 
-    privateDB.performQuery(goalQuery).then(function(response) {
+    privateDB.performQuery(goalQuery, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             throw response.errors[0];
         } else {
@@ -102,7 +102,7 @@ function fetchRecords() {
         }
     });
     
-    privateDB.performQuery(transactionQuery).then(function(response) {
+    privateDB.performQuery(transactionQuery, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             throw response.errors[0];
         } else {
