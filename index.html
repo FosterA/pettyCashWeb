@@ -28,7 +28,7 @@
 
         <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
-            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals"></input>
+            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
             <ul class="unstyled">
                 <li ng-repeat="goal in goalList.goals track by $index">
                     <span>
@@ -58,8 +58,8 @@
         </div>
         <div id="transactions" ng-controller="TransactionsController as transList">
             <h2>Transactions</h2>
-            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions"></input>
-            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction"></input>
+            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
+            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
             <ul class="unstyled">
                 <li ng-repeat="transaction in transList.transactions track by $index">
                     <span>
