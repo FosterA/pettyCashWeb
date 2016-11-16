@@ -5,10 +5,16 @@ pettycash.controller('TransactionsController', function() {
     var today = Date.parse(new Date()); //today's date
  
     transList.addTransaction = function() {
-        var newTransaction = new Transaction(tranDes, tranVal); //create new transaction object
+        
+        var selectBox = document.getElementById('goalSelect'); //get goal select box
+        var reference = selectBox.options[selectBox.selectedIndex].value; //get reference
+        
+        var newTransaction = new Transaction(tranDes, tranVal, reference); //create new transaction object
         transList.transactions.unshift(newTransaction); //add new transaction to front of array
         saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
-        goals[0].contributions += tranVal;
+        
+        transList.setContributions(); //reload current contributions
+        
     };
     
     transList.delete = function(transaction, index) {
@@ -18,9 +24,10 @@ pettycash.controller('TransactionsController', function() {
     
     transList.setContributions = function() {
         angular.forEach(goals, function(goal) {
+            goal.contributions = 0; //initialize to 0 to prevent duplications
             angular.forEach(transList.transactions, function(transaction) {
-                if (transaction.reference == goal.name) {
-                    goal.contributions += transaction.amount;
+                if (transaction.reference == goal.name) { //check goal's name matches reference
+                    goal.contributions += transaction.amount; //increment contributions
                 } 
             }); 
         });
@@ -28,15 +35,15 @@ pettycash.controller('TransactionsController', function() {
     
     transList.loadTransactions = function() {
         transList.transactions = transactions; //assign reference of fetched goals array
-        transList.setContributions();
+        transList.setContributions(); //set contributions
     };
     
-    function Transaction(description, amount) {
+    function Transaction(description, amount, reference) {
         this.name = Date.now().toString(); //timestamp as unique id
         this.description = description;
         this.date = today; //transaction occured today
         this.amount = amount;
-        this.reference = goals[0].name;
+        this.reference = reference //selected goal reference
     }
     
 });

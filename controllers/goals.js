@@ -33,6 +33,11 @@ pettycash.controller('GoalsController', function() {
     
     goalList.loadGoals = function() {
         goalList.goals = goals; //assign reference of fetched goals array
+        var selectBox = document.getElementById('goalSelect');
+        
+        angular.forEach(goalList.goals, function(goal) {
+            selectBox.options.add(new Option(goal.description, goal.name));
+        });
     };
     
     function Goal(description, endDate, amount, priority) {
