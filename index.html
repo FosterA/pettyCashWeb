@@ -33,7 +33,7 @@
                 <li ng-repeat="goal in goalList.goals track by $index">
                     <span>
                         <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
-                        <span>{{goal.name}}****{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}</span>
+                        <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
                     </span>
                 </li>
             </ul>
@@ -64,7 +64,7 @@
                 <li ng-repeat="transaction in transList.transactions track by $index">
                     <span>
                         <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
-                        <span>{{transaction.name}}****{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
+                        <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
                     </span>
                 </li>
             </ul>

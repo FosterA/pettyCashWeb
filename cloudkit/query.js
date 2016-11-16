@@ -40,6 +40,12 @@ function saveRecord(record, recordType) {
                 },
                 date: {
                     value: record.date
+                },
+                goal: {
+                    value: {
+                        recordName: record.reference,
+                        action: 'NONE'
+                    }
                 }
             }
         };
@@ -95,10 +101,12 @@ function fetchRecords() {
             throw response.errors[0];
         } else {
             angular.forEach(response.records, function(record, key) {
-                var goal = {name:record.recordName, description:record.fields.description.value, startDate:record.fields.startDate.value, endDate:record.fields.endDate.value, amount:record.fields.amount.value, priority:record.fields.priority.value}
+                var goal = {name:record.recordName, description:record.fields.description.value, startDate:record.fields.startDate.value, endDate:record.fields.endDate.value, amount:record.fields.amount.value, priority:record.fields.priority.value, contributions:0};
                 goals.push(goal);
             });
-            document.getElementById('loadGoals').click();
+            setTimeout(function() {
+                document.getElementById('loadGoals').click();
+            }, 500);
         }
     });
     
@@ -107,10 +115,12 @@ function fetchRecords() {
             throw response.errors[0];
         } else {
             angular.forEach(response.records, function(record, key) {
-                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value}  
+                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value, reference:record.fields.goal.value.recordName};  
                 transactions.push(transaction);
             });
-            document.getElementById('loadTrans').click();
+            setTimeout(function() { 
+                document.getElementById('loadTrans').click();
+            }, 500);
         }
     });
     

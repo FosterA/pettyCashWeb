@@ -26,14 +26,14 @@ pettycash.controller('GoalsController', function() {
         }
     };
     
-    goalList.loadGoals = function() {
-        angular.copy(goals, goalList.goals); //copy fetched goals to controller
-    }
-    
     goalList.delete = function(goal, index) {
         goalList.goals.splice(index, 1); //remove goal from array
         deleteRecord(goal); //delete goal from cloudkit
-    }
+    };
+    
+    goalList.loadGoals = function() {
+        goalList.goals = goals; //assign reference of fetched goals array
+    };
     
     function Goal(description, endDate, amount, priority) {
         this.name = Date.now().toString(); //timestamp as unique id
@@ -42,6 +42,7 @@ pettycash.controller('GoalsController', function() {
         this.endDate = endDate;
         this.amount = amount;
         this.priority = parseInt(priority); //store priority as integer
+        this.contributions = 0;
     }
     
 }).filter('priority', function() { //filter for displaying priority as text
