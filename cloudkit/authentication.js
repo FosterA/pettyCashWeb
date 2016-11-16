@@ -1,8 +1,11 @@
-function demoSetUpAuth() {
+var user;
+
+function setUpAuth() {
     // Get the container.
     var container = CloudKit.getDefaultContainer();
     function gotoAuthenticatedState(userIdentity) {
       var name = userIdentity.nameComponents;
+      user = userIdentity.userRecordName; //grab userRecordName for pet transaction data
       if(name) {
         displayUserName(name.givenName + ' ' + name.familyName);
       } else {
@@ -41,7 +44,7 @@ function demoSetUpAuth() {
       });
 }
 
-function demoFetchCurrentUserIdentity() {
+function fetchCurrentUserIdentity() {
   var container = CloudKit.getDefaultContainer();
 
   // Fetch user's info.
@@ -66,6 +69,6 @@ var displayUserName = function(name) {
 
 //calls to run the above functions
 ////check if authenticated and if not display apple login button/window
-demoSetUpAuth();
+setUpAuth();
 ////should diplay the discoverable userID after you have logged in and allowed discovery
-demoFetchCurrentUserIdentity();
+fetchCurrentUserIdentity();

@@ -10,21 +10,11 @@ function saveRecord(record, recordType) {
             recordName: record.name,
             recordType: recordType,
             fields: {
-                amount: {
-                    value: record.amount
-                },
-                description: {
-                    value: record.description
-                },
-                endDate: {
-                    value: record.endDate
-                },
-                startDate: {
-                    value: record.startDate
-                },
-                priority: {
-                    value: record.priority
-                }
+                amount: {value: record.amount},
+                description: {value: record.description},
+                endDate: {value: record.endDate},
+                startDate: {value: record.startDate},
+                priority: {value: record.priority}
             }
         };
     } else if (recordType == 'Transaction') {
@@ -32,19 +22,17 @@ function saveRecord(record, recordType) {
             recordName: record.name,
             recordType: recordType,
             fields: {
-                amount: {
-                    value: record.amount
-                },
-                description: {
-                    value: record.description
-                },
-                date: {
-                    value: record.date
-                },
+                amount: {value: record.amount},
+                description: {value: record.description},
+                date: {value: record.date},
                 goal: {
                     value: {
                         recordName: record.reference,
-                        action: 'NONE'
+                        action: 'NONE',
+                        zoneID: {
+                            zoneName: 'savings', 
+                            ownerRecordName: user
+                        }
                     }
                 }
             }
@@ -106,7 +94,7 @@ function fetchRecords() {
             });
             setTimeout(function() {
                 document.getElementById('loadGoals').click();
-            }, 500);
+            }, 250);
         }
     });
     
@@ -120,7 +108,7 @@ function fetchRecords() {
             });
             setTimeout(function() { 
                 document.getElementById('loadTrans').click();
-            }, 500);
+            }, 250);
         }
     });
     
