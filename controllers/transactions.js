@@ -7,8 +7,14 @@ pettycash.controller('TransactionsController', function() {
     transList.addTransaction = function() {
         
         var selectBox = document.getElementById('goalSelect'); //get goal select box
-        var reference = selectBox.options[selectBox.selectedIndex].value; //get reference
+        var reference;
         
+        if (selectBox.options.length == 0) {
+            reference = "NoRef"; //if no goals available, set no reference
+        } else {
+            reference = selectBox.options[selectBox.selectedIndex].value; //get reference from selected option 
+        }
+
         var newTransaction = new Transaction(tranDes, tranVal, reference); //create new transaction object
         transList.transactions.unshift(newTransaction); //add new transaction to front of array
         saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
