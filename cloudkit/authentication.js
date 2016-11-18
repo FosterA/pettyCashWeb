@@ -55,7 +55,7 @@ function fetchCurrentUserIdentity() {
         ' user:';
 
       // Render the user's identity.
-      return renderUserIdentity(title,userIdentity);
+      //return renderUserIdentity(title,userIdentity);
     });
 }
 

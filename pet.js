@@ -35,7 +35,7 @@ var fillDialog;
 var action;
 var tranDes;
 var tranVal;
-var style = {font: "12px Arial", wordWrap: true, wordWrapWidth: fillDialog.width};
+var style = {font: "12px Arial", wordWrap: true, wordWrapWidth: 0};
 
 function create() {
     
@@ -78,8 +78,10 @@ function create() {
         cat.input.useHandCursor = true;
         cat.events.onInputDown.add(closeWindow, {pet: 'cat'});
         
+        style.wordWrapWidth = popup.width;
         var charText = game.add.text(0, -70, "Select Your Pet", style);
         charText.anchor.set(0.5);
+        charText.scale.set(1.5);
 
         //  Add the "close button" to the popup window image
         popup.addChild(dog);
@@ -171,13 +173,14 @@ function fillFood() {
 
     fillDialog = game.add.sprite(game.world.centerX - 295, game.world.centerY + 115, bmd);
     fillDialog.anchor.set(0.5);
-
+    
+    style.wordWrapWidth = fillDialog.width;
+    
     var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
     var noBtn = game.make.button(10, 0, 'no', noBox);
 
     var foodText = game.add.text(0, -15, "Buy more food? $5", style);
     foodText.anchor.set(0.5);
-    foodText.scale.set(0.45);
 
     fillDialog.addChild(yesBtn);
     fillDialog.addChild(noBtn);
@@ -202,12 +205,13 @@ function fillWater() {
     fillDialog = game.add.sprite(game.world.centerX - 360, game.world.centerY + 115, bmd);
     fillDialog.anchor.set(0.5);
     
+    style.wordWrapWidth = fillDialog.width;
+    
     var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
     var noBtn = game.make.button(10, 0, 'no', noBox);
     
     var waterText = game.add.text(0, -15, "Refill water? $7", style);
     waterText.anchor.set(0.5);
-    waterText.scale.set(0.45);
     
     fillDialog.addChild(yesBtn);
     fillDialog.addChild(noBtn);
