@@ -1,34 +1,45 @@
 
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'petGame', {preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game(900, 540, Phaser.CANVAS, 'petGame', {preload: preload, create: create, update: update, render: render});
 
 function preload() {
     //phaser assets
-    game.load.image('mushroom', 'content/assets/mushroom2.png');
-    game.load.image('phaser', 'content/assets/phaser-dude.png');
+    game.load.image('dog', 'content/assets/newassets/Dog.png');
+    game.load.image('cat', 'content/assets/phaser-dude.png');
     game.load.spritesheet('button', 'content/assets/button_sprite_sheet.png', 193, 71);
     //custom and downloaded assets
     game.load.image('empty', 'content/assets/bowlEmpty.png');
-    game.load.image('full', 'content/assets/bowlFull.png');
     game.load.image('yes', 'content/assets/yes.png');
     game.load.image('no', 'content/assets/no.png');
+    
+    game.load.image('background', 'content/assets/newassets/background.png');
+    game.load.image('dog-food', 'content/assets/newassets/DogFood.png');
+    game.load.image('dog-water', 'content/assets/newassets/DogWater.png');
+    game.load.image('dog-house', 'content/assets/newassets/DogHouse.png');
 
 }
 
 var sprite = null;
 var button;
-var newButton;
+var animal;
+var house;
 var popup;
 var tweenGrow = null;
 var tweenShrink = null;
 var tweenMove = null; 
-var emptyBowl;
-var fullBowl;
+var emptyFood;
+var fullFood;
+var emptyWater;
+var fullWater;
 var fillDialog;
+var action;
 var tranDes;
 var tranVal;
+var style = {font: "12px Arial", wordWrap: true, wordWrapWidth: fillDialog.width};
 
 function create() {
+    
+    game.add.tileSprite(0, 0, game.width, game.height, 'background');
 
     if (sprite !== null) {
 
@@ -54,21 +65,26 @@ function create() {
         popup.inputEnabled = true;
 
         //  And click the close button to close it down again
-        var mushroom = game.make.sprite(-100, -25, 'mushroom');
-        mushroom.inputEnabled = true;
-        mushroom.input.priorityID = 1;
-        mushroom.input.useHandCursor = true;
-        mushroom.events.onInputDown.add(closeWindow, {pet: 'mushroom'});
+        var dog = game.make.sprite(-100, -45, 'dog');
+        dog.scale.set(0.15);
+        dog.inputEnabled = true;
+        dog.input.priorityID = 1;
+        dog.input.useHandCursor = true;
+        dog.events.onInputDown.add(closeWindow, {pet: 'dog'});
 
-        var phaser = game.make.sprite(50, -15, 'phaser');
-        phaser.inputEnabled = true;
-        phaser.input.priorityID = 1;
-        phaser.input.useHandCursor = true;
-        phaser.events.onInputDown.add(closeWindow, {pet: 'phaser'});
+        var cat = game.make.sprite(50, -15, 'cat');
+        cat.inputEnabled = true;
+        cat.input.priorityID = 1;
+        cat.input.useHandCursor = true;
+        cat.events.onInputDown.add(closeWindow, {pet: 'cat'});
+        
+        var charText = game.add.text(0, -70, "Select Your Pet", style);
+        charText.anchor.set(0.5);
 
         //  Add the "close button" to the popup window image
-        popup.addChild(mushroom);
-        popup.addChild(phaser);
+        popup.addChild(dog);
+        popup.addChild(cat);
+        popup.addChild(charText);
 
         //  Hide it awaiting a click
         popup.scale.set(0.1);
@@ -110,9 +126,6 @@ function closeWindow() {
 
     addBasic(this.pet);
 
-    //tweenMove = game.add.tween(newButton).to({x: game.world.randomX, y: 100}, 3000, Phaser.Easing.Default, true);
-    //tweenShrink = game.add.tween(newButton.scale).to({x: 0.50, y: 0.50}, 3000, Phaser.Easing.Default, true);
-
 }
 
 function moveAgain() {
@@ -123,15 +136,32 @@ function moveAgain() {
 
 function addBasic(pet) {
 
-    newButton = game.add.button(game.world.centerX, game.world.centerY, pet, moveAgain);
-    emptyBowl = game.add.button(200, 500, 'empty', fillTransaction);
-    fullBowl = game.add.button(200, 500, 'full');
-    fullBowl.visible = false;
+    type = pet;
+    animal = game.add.button(game.world.centerX - 100, game.world.centerY + 100, pet, moveAgain);
+    animal.scale.set(0.15);
+    
+    house = game.add.image(game.world.centerX - 415, game.world.centerY + 0, 'dog-house');
+    house.scale.set(0.40);
+    
+    emptyFood = game.add.button(game.world.centerX - 335, game.world.centerY + 160, 'dog-food', fillFood);
+    emptyFood.scale.set(0.18);
+    fullFood = game.add.image(game.world.centerX - 335, game.world.centerY + 160, 'dog-food');
+    fullFood.scale.set(0.18);
+    fullFood.visible = false;
+    
+    emptyWater = game.add.button(game.world.centerX - 400, game.world.centerY + 160, 'dog-water', fillWater);
+    emptyWater.scale.set(0.18);
+    fullWater = game.add.image(game.world.centerX - 400, game.world.centerY + 160, 'dog-water', fillWater);
+    fullWater.scale.set(0.18);
+    fullWater.visible = false;
+
 }
 
-function fillTransaction() {
+function fillFood() {
+    
+    action = 'food';
 
-    emptyBowl.inputEnabled = false;
+    emptyFood.inputEnabled = false;
 
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -139,15 +169,15 @@ function fillTransaction() {
     bmd.ctx.fillStyle = '#ffffff';
     bmd.ctx.fill();
 
-    fillDialog = game.add.sprite(225, 465, bmd);
+    fillDialog = game.add.sprite(game.world.centerX - 295, game.world.centerY + 115, bmd);
     fillDialog.anchor.set(0.5);
 
     var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
     var noBtn = game.make.button(10, 0, 'no', noBox);
 
-    var style = {font: "12px Arial", wordWrap: true, wordWrapWidth: fillDialog.width};
-    var foodText = game.add.text(0, -15, "Buy more food? 5$", style);
+    var foodText = game.add.text(0, -15, "Buy more food? $5", style);
     foodText.anchor.set(0.5);
+    foodText.scale.set(0.45);
 
     fillDialog.addChild(yesBtn);
     fillDialog.addChild(noBtn);
@@ -157,22 +187,67 @@ function fillTransaction() {
 
 }
 
+function fillWater() {
+    
+    action = 'water';
+    
+    emptyWater.inputEnabled = false;
+    
+    var bmd = game.add.bitmapData(120, 75);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, 120, 75);
+    bmd.ctx.fillStyle = '#ffffff';
+    bmd.ctx.fill();
+    
+    fillDialog = game.add.sprite(game.world.centerX - 360, game.world.centerY + 115, bmd);
+    fillDialog.anchor.set(0.5);
+    
+    var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
+    var noBtn = game.make.button(10, 0, 'no', noBox);
+    
+    var waterText = game.add.text(0, -15, "Refill water? $7", style);
+    waterText.anchor.set(0.5);
+    waterText.scale.set(0.45);
+    
+    fillDialog.addChild(yesBtn);
+    fillDialog.addChild(noBtn);
+    fillDialog.addChild(waterText);
+    fillDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(fillDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+    
+}
+
 function yesBox() {
-
+    
     fillDialog.visible = false;
-    emptyBowl.visible = false;
-    fullBowl.visible = true;
+    
+    if (action == 'food') {
+        emptyFood.visible = false;
+        fullFood.visible = true;
+        
+        tranDes = "Feed pet";
+        tranVal = 5;
+    } else if (action == 'water') {
+        emptyWater.visible = false;
+        fullWater.visible = true;
+        
+        tranDes = "Give pet water";
+        tranVal = 7;
+    }
 
-    tranDes = "Feed pet";
-    tranVal = 5;
     document.getElementById('addTran').click();
 
 }
 
 function noBox() {
-
+    
     fillDialog.visible = false;
-    emptyBowl.inputEnabled = true;
+    
+    if (action == 'food') {
+        emptyFood.inputEnabled = true;
+    } else if (action == 'water') {
+        emptyWater.inputEnabled = true;
+    }
 
 }
 
