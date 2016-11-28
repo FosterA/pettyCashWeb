@@ -33,7 +33,8 @@ var emptyFood;
 var fullFood;
 var emptyWater;
 var fullWater;
-var fillDialog;
+var actionDialog;
+var brush;
 var action;
 var tranDes;
 var tranVal;
@@ -162,7 +163,7 @@ function addBasic(pet) {
     var ball = game.add.image(game.world.centerX + 200, game.world.centerY + 165, 'dog-ball');
     ball.scale.set(0.08);
     
-    var brush = game.add.image(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush');
+    brush = game.add.button(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush', groomPet);
     brush.scale.set(0.08);
 
 }
@@ -172,6 +173,8 @@ function fillFood() {
     action = 'food';
 
     emptyFood.inputEnabled = false;
+    emptyWater.inputEnabled = false;
+    brush.inputEnabled = false;
 
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -179,22 +182,22 @@ function fillFood() {
     bmd.ctx.fillStyle = '#ffffff';
     bmd.ctx.fill();
 
-    fillDialog = game.add.sprite(game.world.centerX - 295, game.world.centerY + 115, bmd);
-    fillDialog.anchor.set(0.5);
+    actionDialog = game.add.sprite(game.world.centerX - 295, game.world.centerY + 115, bmd);
+    actionDialog.anchor.set(0.5);
     
-    style.wordWrapWidth = fillDialog.width;
+    style.wordWrapWidth = actionDialog.width;
     
     var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
     var noBtn = game.make.button(10, 0, 'no', noBox);
 
-    var foodText = game.add.text(0, -15, "Buy more food? $5", style);
+    var foodText = game.add.text(0, -15, "Buy food? $3.50", style);
     foodText.anchor.set(0.5);
 
-    fillDialog.addChild(yesBtn);
-    fillDialog.addChild(noBtn);
-    fillDialog.addChild(foodText);
-    fillDialog.scale.set(0.1);
-    tweenGrow = game.add.tween(fillDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+    actionDialog.addChild(yesBtn);
+    actionDialog.addChild(noBtn);
+    actionDialog.addChild(foodText);
+    actionDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
 
 }
 
@@ -203,6 +206,8 @@ function fillWater() {
     action = 'water';
     
     emptyWater.inputEnabled = false;
+    brush.inputEnabled = false;
+    emptyFood.inputEnabled = false;
     
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -210,56 +215,92 @@ function fillWater() {
     bmd.ctx.fillStyle = '#ffffff';
     bmd.ctx.fill();
     
-    fillDialog = game.add.sprite(game.world.centerX - 360, game.world.centerY + 115, bmd);
-    fillDialog.anchor.set(0.5);
+    actionDialog = game.add.sprite(game.world.centerX - 360, game.world.centerY + 115, bmd);
+    actionDialog.anchor.set(0.5);
     
-    style.wordWrapWidth = fillDialog.width;
+    style.wordWrapWidth = actionDialog.width;
     
     var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
     var noBtn = game.make.button(10, 0, 'no', noBox);
     
-    var waterText = game.add.text(0, -15, "Refill water? $7", style);
+    var waterText = game.add.text(0, -15, "Fill water? $4", style);
     waterText.anchor.set(0.5);
     
-    fillDialog.addChild(yesBtn);
-    fillDialog.addChild(noBtn);
-    fillDialog.addChild(waterText);
-    fillDialog.scale.set(0.1);
-    tweenGrow = game.add.tween(fillDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+    actionDialog.addChild(yesBtn);
+    actionDialog.addChild(noBtn);
+    actionDialog.addChild(waterText);
+    actionDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+    
+}
+
+function groomPet() {
+    
+    action = 'groom';
+    
+    brush.inputEnabled = false;
+    emptyFood.inputEnabled = false;
+    emptyWater.inputEnabled = false;
+    
+    var bmd = game.add.bitmapData(120, 75);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, 120, 75);
+    bmd.ctx.fillStyle = '#ffffff';
+    bmd.ctx.fill();
+    
+    actionDialog = game.add.sprite(game.world.centerX - 175, game.world.centerY + 120, bmd);
+    actionDialog.anchor.set(0.5);
+    
+    style.worldWrapWidth = actionDialog.width;
+    
+    var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
+    var noBtn = game.make.button(10, 0, 'no', noBox);
+    
+    var groomText = game.add.text(0, -15, "Groom Pet? $7.70", style);
+    groomText.anchor.set(0.5);
+    
+    actionDialog.addChild(yesBtn);
+    actionDialog.addChild(noBtn);
+    actionDialog.addChild(groomText);
+    actionDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
     
 }
 
 function yesBox() {
     
-    fillDialog.visible = false;
+    actionDialog.visible = false;
     
     if (action == 'food') {
         emptyFood.visible = false;
         fullFood.visible = true;
         
         tranDes = "Feed pet";
-        tranVal = 5;
+        tranVal = 3.5;
     } else if (action == 'water') {
         emptyWater.visible = false;
         fullWater.visible = true;
         
         tranDes = "Give pet water";
-        tranVal = 7;
+        tranVal = 4;
+    } else if (action == 'groom') {
+        tranDes = "Groom pet";
+        tranVal = 7.7;
+        
+        brush.inputEnabled = true;
     }
-
+    
     document.getElementById('addTran').click();
 
 }
 
 function noBox() {
     
-    fillDialog.visible = false;
-    
-    if (action == 'food') {
-        emptyFood.inputEnabled = true;
-    } else if (action == 'water') {
-        emptyWater.inputEnabled = true;
-    }
+    actionDialog.visible = false;
+
+    emptyFood.inputEnabled = true;
+    emptyWater.inputEnabled = true;
+    brush.inputEnabled = true;
 
 }
 
