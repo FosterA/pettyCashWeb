@@ -16,6 +16,8 @@ function preload() {
     game.load.image('dog-food', 'content/assets/newassets/DogFood.png');
     game.load.image('dog-water', 'content/assets/newassets/DogWater.png');
     game.load.image('dog-house', 'content/assets/newassets/DogHouse.png');
+    game.load.image('dog-ball', 'content/assets/newassets/TennisBall.png');
+    game.load.image('dog-brush', 'content/assets/newassets/DogBrush.png');
 
 }
 
@@ -156,6 +158,12 @@ function addBasic(pet) {
     fullWater = game.add.image(game.world.centerX - 400, game.world.centerY + 160, 'dog-water', fillWater);
     fullWater.scale.set(0.18);
     fullWater.visible = false;
+    
+    var ball = game.add.image(game.world.centerX + 200, game.world.centerY + 165, 'dog-ball');
+    ball.scale.set(0.08);
+    
+    var brush = game.add.image(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush');
+    brush.scale.set(0.08);
 
 }
 
