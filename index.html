@@ -8,11 +8,11 @@
 </head>
 
 <body ng-app="PettyCash" ng-cloak>
-  <md-content class="md-padding">
-  <div ng-cloak="" class="navBardemoBasicUsage">
+  <!--<md-content class="md-padding">-->
+  <div ng-cloak="" class="navBarDemo">
       <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
         <div class="md-display-1" id="title">PettyCash</div>
-        <md-nav-item md-nav-click="goto('page1')" name="page1">Page One</md-nav-item>
+        <md-nav-item md-nav-href="#expenses" name="Expenses">Expenses</md-nav-item>
         <md-nav-item md-nav-click="goto('page2')" name="page2">Page Two</md-nav-item>
         <md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>
         <md-nav-item md-nav-click="goto('page4')" name="page4">Page Four</md-nav-item>
@@ -23,7 +23,10 @@
         <div id="apple-sign-out-button"></div>
       </md-nav-bar>
   </div>
+  <div class=ng-view></div>
 
+<script type="text/ng-template" id="home.html">
+  <md-content>
   <div layout="row" id="petGameDiv">
     <div flex="30">
       <h2>Pet Game</h2>
@@ -31,61 +34,66 @@
       <select id="goalSelect"></select>
     </div>
     <div flex="60" id="petGame"></div>
-    <div flex="10"></div>
-  </div>
-
-<div layout="column" id="lowerDiv">
-  <div flex="50">
-    <h2>Goals</h2>
-    <div id="goals" ng-controller="GoalsController as goalList">
-        <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-        <ul class="unstyled">
-            <li ng-repeat="goal in goalList.goals track by $index">
-                <span>
-                    <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
-                    <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
-                </span>
-            </li>
-        </ul>
-        <form id="goalForm" ng-submit="goalList.addGoal()">
-            <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here">
-            <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
-
-            <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
-            <!-- <datepicker date-format="longDate" ng-style="{width: 146 + 'px'}">
-                <input ng-model="goalList.newEnd" type="text">
-            </datepicker><br> -->
-            <select ng-model="goalList.newPrty" name="priority">
-                <option value="">-- choose priority --</option>
-                <option value="1">low</option>
-                <option value="2">medium</option>
-                <option value="3">high</option>
-            </select>
-            <br>
-            <md-button class="md-raised" type="submit" value="add">submit</md-button>
-            <br>
-        </form>
-        <br>
+      <div flex="10"></div>
     </div>
-  </div>
-  <hr></hr>
-  <div flex="50">
-    <div id="transactions" ng-controller="TransactionsController as transList">
-        <h2>Transactions</h2>
-        <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
-        <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
-        <ul class="unstyled">
-            <li ng-repeat="transaction in transList.transactions track by $index">
-                <span>
-                    <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
-                    <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
-                </span>
-            </li>
-        </ul>
+
+  <div layout="column" id="lowerDiv">
+      <div flex="50">
+        <h2>Goals</h2>
+        <div id="goals" ng-controller="GoalsController as goalList">
+            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
+            <ul class="unstyled">
+                <li ng-repeat="goal in goalList.goals track by $index">
+                    <span>
+                        <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
+                        <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
+                    </span>
+                </li>
+            </ul>
+            <form id="goalForm" ng-submit="goalList.addGoal()">
+                <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here">
+                <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
+
+                <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
+                <!-- <datepicker date-format="longDate" ng-style="{width: 146 + 'px'}">
+                    <input ng-model="goalList.newEnd" type="text">
+                </datepicker><br> -->
+                <select ng-model="goalList.newPrty" name="priority">
+                    <option value="">-- choose priority --</option>
+                    <option value="1">low</option>
+                    <option value="2">medium</option>
+                    <option value="3">high</option>
+                </select>
+                <br>
+                <md-button class="md-raised" type="submit" value="add">submit</md-button>
+                <br>
+            </form>
+            <br>
+        </div>
+      </div>
+      <hr></hr>
+      <div flex="50">
+        <div id="transactions" ng-controller="TransactionsController as transList">
+            <h2>Transactions</h2>
+            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
+            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
+            <ul class="unstyled">
+                <li ng-repeat="transaction in transList.transactions track by $index">
+                    <span>
+                        <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
+                        <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</md-content>
+  </md-content>
+</script>
+
+<script type="text/ng-template" id="expenses.html">
+  <h2>Insert Expenses Here</h2>
+</script>
   <!--must include Angular first -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
@@ -94,6 +102,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.6/angular-datepicker.min.js"></script>
   <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
