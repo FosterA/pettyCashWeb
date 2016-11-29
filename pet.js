@@ -8,7 +8,6 @@ function preload() {
     game.load.image('cat', 'content/assets/phaser-dude.png');
     game.load.spritesheet('button', 'content/assets/button_sprite_sheet.png', 193, 71);
     //custom and downloaded assets
-    game.load.image('empty', 'content/assets/bowlEmpty.png');
     game.load.image('yes', 'content/assets/yes.png');
     game.load.image('no', 'content/assets/no.png');
     

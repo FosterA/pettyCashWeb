@@ -22,7 +22,7 @@ function setUpAuth() {
         showDialogForPersistError();
       }
 
-      displayUserName('Unauthenticated User');
+      displayUserName(' ');
       container
         .whenUserSignsIn()
         .then(gotoAuthenticatedState)
