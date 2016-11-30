@@ -26,6 +26,13 @@ pettycash.controller('TransactionsController', function() {
     transList.delete = function(transaction, index) {
         transList.transactions.splice(index, 1); //remove transaction from array
         deleteRecord(transaction); //delete transaction from cloudkit
+        
+        angular.forEach(goals, function(goal) {
+            if (goal.name == transaction.reference) {
+                goal.contributions -= transaction.amount; //remove contribution
+            } 
+        });
+        transList.setContributions(); //reload contributions
     };
     
     transList.setContributions = function() {
