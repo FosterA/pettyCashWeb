@@ -17,11 +17,12 @@ function preload() {
     game.load.image('dog-house', 'content/assets/DogHouse.png');
     game.load.image('dog-ball', 'content/assets/TennisBall.png');
     game.load.image('dog-brush', 'content/assets/DogBrush.png');
+    game.load.image('dog-poop', 'content/assets/poop.png');
 
 }
 
 var button, popup;
-var animal, house, ball, brush;
+var animal, house, ball, brush, poop;
 var animalStarX;
 var tweenGrow = null;
 var tweenShrink = null;
@@ -119,7 +120,7 @@ function closeWindow() {
 
 function moveAgain() {
 
-    tweenMove = game.add.tween(newButton).to({x: game.world.randomX, y: game.world.randomY}, 3000, Phaser.Easing.Default, true);
+    //tweenMove = game.add.tween(newButton).to({x: game.world.randomX, y: game.world.randomY}, 3000, Phaser.Easing.Default, true);
 
 }
 
@@ -148,7 +149,6 @@ function addBasic(pet) {
     animal = game.add.button(game.world.centerX - 100, game.world.centerY + 100, pet, moveAgain);
     animalStartX = game.world.centerX - 100;
     animal.scale.set(0.15);
-    //animal.anchor.set(0.5);
     
     house = game.add.image(game.world.centerX - 415, game.world.centerY + 0, 'dog-house');
     house.scale.set(0.40);
@@ -167,10 +167,17 @@ function addBasic(pet) {
     
     ball = game.add.button(game.world.centerX + 200, game.world.centerY + 165, 'dog-ball', moveBall);
     ball.scale.set(0.08);
-    //ball.anchor.set(0.5);
     
     brush = game.add.button(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush', groomPet);
     brush.scale.set(0.08);
+    
+    var chance = Math.floor((Math.random() * 10) + 1);
+    
+    if (chance%3 == 0) {
+        poop = game.add.button(game.world.randomX, game.world.centerY + 180, 'dog-poop', pickupPoop);
+        poop.scale.set(0.075);
+        poop.anchor.set(0.5);
+    }
 
 }
 
@@ -181,6 +188,9 @@ function fillFood() {
     emptyFood.inputEnabled = false;
     emptyWater.inputEnabled = false;
     brush.inputEnabled = false;
+    if (poop != null) {
+        poop.inputEnabled = false;
+    }
 
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -214,6 +224,9 @@ function fillWater() {
     emptyWater.inputEnabled = false;
     brush.inputEnabled = false;
     emptyFood.inputEnabled = false;
+    if (poop != null) {
+        poop.inputEnabled = false;
+    }
     
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -247,6 +260,9 @@ function groomPet() {
     brush.inputEnabled = false;
     emptyFood.inputEnabled = false;
     emptyWater.inputEnabled = false;
+    if (poop != null) {
+        poop.inputEnabled = false;
+    }
     
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -273,9 +289,50 @@ function groomPet() {
     
 }
 
+function pickupPoop() {
+    
+    action = 'poop';
+    
+    brush.inputEnabled = false;
+    emptyFood.inputEnabled = false;
+    emptyWater.inputEnabled = false;
+    poop.inputEnabled = false;
+    
+    var bmd = game.add.bitmapData(120, 75);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, 120, 75);
+    bmd.ctx.fillStyle = '#ffffff';
+    bmd.ctx.fill();
+    
+    actionDialog = game.add.sprite(poop.x, poop.y - 65, bmd);
+    actionDialog.anchor.set(0.5);
+    
+    style.worldWrapWidth = actionDialog.width;
+    
+    var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
+    var noBtn = game.make.button(10, 0, 'no', noBox);
+    
+    var poopText = game.add.text(0, -15, "Pickup poop? $2", style);
+    poopText.anchor.set(0.5);
+    
+    actionDialog.addChild(yesBtn);
+    actionDialog.addChild(noBtn);
+    actionDialog.addChild(poopText);
+    actionDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+}
+
 function yesBox() {
     
     actionDialog.visible = false;
+    
+    emptyFood.inputEnabled = true;
+    emptyWater.inputEnabled = true;
+    brush.inputEnabled = true;
+    
+    if (poop != null) {
+        poop.inputEnabled = true;
+    }
     
     if (action == 'food') {
         emptyFood.visible = false;
@@ -293,7 +350,11 @@ function yesBox() {
         tranDes = "Groom pet";
         tranVal = 7.7;
         
-        brush.inputEnabled = true;
+    } else if (action == 'poop') {
+        tranDes = "Pickup poop";
+        tranVal = 2;
+        
+        poop.pendingDestroy = true;
     }
     
     document.getElementById('addTran').click();
@@ -307,6 +368,9 @@ function noBox() {
     emptyFood.inputEnabled = true;
     emptyWater.inputEnabled = true;
     brush.inputEnabled = true;
+    if (poop != null) {
+        poop.inputEnabled = false;
+    }
 
 }
 
