@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="content/css/pettycash.css">
 </head>
 
-<body ng-app="PettyCash" ng-cloak>
+<body ng-app="PettyCash" ng-controller="navController as NC" ng-cloak>
   <!--<md-content class="md-padding">-->
-  <div ng-cloak="" class="navBarDemo">
-      <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+  <div class="navBarDemo" ng-cloak>
+      <md-nav-bar md-selected-nav-item="NC.currentNavItem" nav-bar-aria-label="navigation links">
         <div class="md-display-1" id="title">PettyCash</div>
-        <md-nav-item md-nav-click="goto('page2')" name="Home">Home</md-nav-item>
-        <md-nav-item md-nav-href="#expenses" name="Expenses">Expenses</md-nav-item>
+        <md-nav-item md-nav-href="#/" name="Home" value="Home">Home</md-nav-item>
+        <md-nav-item md-nav-href="#expenses" name="Expenses" value="Expenses">Expenses</md-nav-item>
         <md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>
         <md-nav-item md-nav-click="goto('page4')" name="page4">Page Four</md-nav-item>
         <span flex></span>
@@ -36,7 +36,7 @@
     </div>
 
   <div layout="column" id="lowerDiv">
-      <div flex="50">
+      <div flex="auto">
         <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
             <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
@@ -66,8 +66,7 @@
             <br>
         </div>
       </div>
-      <hr></hr>
-      <div flex="50">
+      <div flex="auto">
         <div id="transactions" ng-controller="TransactionsController as transList">
             <h2>Transactions</h2>
             <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
@@ -83,6 +82,7 @@
         </div>
       </div>
     </div>
+    <script>
 </script>
 
 <script type="text/ng-template" id="expenses.html">
@@ -94,8 +94,6 @@
 </body>
   <!--must include Angular first -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-
-
   <!-- Angular Material requires Angular.js Libraries -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
@@ -111,7 +109,6 @@
   <script src="controllers/transactions.js"></script>
   <script src="cloudkit/authentication.js"></script>
   <script src="cloudkit/query.js"></script>
-
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 
