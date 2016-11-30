@@ -4,25 +4,27 @@ var game = new Phaser.Game(900, 540, Phaser.CANVAS, 'petGame', {preload: preload
 
 function preload() {
     
-    //custom and downloaded assets
+    //downloaded assets
+    game.load.image('background', 'content/assets/background.png');
+    game.load.image('dog-poop', 'content/assets/poop.png');
+    game.load.image('soap', 'content/assets/soap.png');
+    game.load.image('bubble', 'content/assets/bubble256.png');
+    
+    //custom assets
+    game.load.image('button', 'content/assets/start.png');
     game.load.image('yes', 'content/assets/yes.png');
     game.load.image('no', 'content/assets/no.png');
-    game.load.image('button', 'content/assets/start.png');
-    
-    //more custom assets
-    game.load.image('background', 'content/assets/background.png');
     game.load.image('dog', 'content/assets/Dog.png');
     game.load.image('dog-food', 'content/assets/DogFood.png');
     game.load.image('dog-water', 'content/assets/DogWater.png');
     game.load.image('dog-house', 'content/assets/DogHouse.png');
     game.load.image('dog-ball', 'content/assets/TennisBall.png');
     game.load.image('dog-brush', 'content/assets/DogBrush.png');
-    game.load.image('dog-poop', 'content/assets/poop.png');
-
+    
 }
 
 var button, popup;
-var animal, house, ball, brush, poop;
+var animal, house, ball, brush, poop, soap;
 var boundary;
 var tweenGrow = null;
 var tweenShrink = null;
@@ -169,15 +171,21 @@ function addBasic(pet) {
     brush = game.add.button(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush', groomPet);
     brush.scale.set(0.08);
     
+    soap = game.add.button(game.world.centerX - 150, game.world.centerY + 140, 'soap', bathePet);
+    soap.scale.set(0.04);
+    
     var chance = Math.floor((Math.random() * 10) + 1);  
     if (chance%3 == 0) {
         
-        poop = game.add.button(game.world.centerX, game.world.centerY + 180, 'dog-poop', pickupPoop);
-        poop.scale.set(0.065);
-        poop.anchor.set(0.5);
+        var poopX = game.world.randomX;
+        while (poopX <= boundary || poopX >= 850) {
+            poopX = game.world.randomX;
+        }
         
+        poop = game.add.button(poopX, game.world.centerY + 180, 'dog-poop', pickupPoop);
+        poop.scale.set(0.065);
+        poop.anchor.set(0.5);    
     }
-
 }
 
 function fillFood() {
@@ -187,6 +195,7 @@ function fillFood() {
     emptyFood.inputEnabled = false;
     emptyWater.inputEnabled = false;
     brush.inputEnabled = false;
+    soap.inputEnabled = false;
     if (poop != null) {
         poop.inputEnabled = false;
     }
@@ -223,6 +232,7 @@ function fillWater() {
     emptyWater.inputEnabled = false;
     brush.inputEnabled = false;
     emptyFood.inputEnabled = false;
+    soap.inputEnabled = false;
     if (poop != null) {
         poop.inputEnabled = false;
     }
@@ -259,6 +269,7 @@ function groomPet() {
     brush.inputEnabled = false;
     emptyFood.inputEnabled = false;
     emptyWater.inputEnabled = false;
+    soap.inputEnabled = false;
     if (poop != null) {
         poop.inputEnabled = false;
     }
@@ -296,6 +307,7 @@ function pickupPoop() {
     emptyFood.inputEnabled = false;
     emptyWater.inputEnabled = false;
     poop.inputEnabled = false;
+    soap.inputEnabled = false;
     
     var bmd = game.add.bitmapData(120, 75);
     bmd.ctx.beginPath();
@@ -321,6 +333,58 @@ function pickupPoop() {
     tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
 }
 
+function bathePet() {
+    
+    action = 'bathe';
+    
+    brush.inputEnabled = false;
+    emptyFood.inputEnabled = false;
+    emptyWater.inputEnabled = false;
+    soap.inputEnabled = false;
+    if (poop != null) {
+        poop.inputEnabled = false;
+    }
+    
+    var bmd = game.add.bitmapData(120, 75);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, 120, 75);
+    bmd.ctx.fillStyle = '#ffffff';
+    bmd.ctx.fill();
+    
+    actionDialog = game.add.sprite(soap.x + 10, soap.y - 40, bmd);
+    actionDialog.anchor.set(0.5);
+    
+    style.worldWrapWidth = actionDialog.width;
+    
+    var yesBtn = game.make.button(-50, 0, 'yes', yesBox);
+    var noBtn = game.make.button(10, 0, 'no', noBox);
+    
+    var soapText = game.add.text(0, -15, "Bathe pet? $10", style);
+    soapText.anchor.set(0.5);
+    
+    actionDialog.addChild(yesBtn);
+    actionDialog.addChild(noBtn);
+    actionDialog.addChild(soapText);
+    actionDialog.scale.set(0.1);
+    tweenGrow = game.add.tween(actionDialog.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
+}
+
+function addBubbles() {
+    
+    for (var i = 0; i < 20; i++) {
+        
+        var randY = game.rnd.realInRange(animal.y - 20, animal.y + 50);
+        var randX = game.rnd.realInRange(animal.x, animal.x + 70);
+        var bubble = game.add.sprite(randX, randY, 'bubble');
+        bubble.scale.set(game.rnd.realInRange(0.04, 0.08));
+        
+        var speed = game.rnd.realInRange(6000, 8000);
+
+        tweenMove = game.add.tween(bubble).to({y: -100}, speed, Phaser.Easing.Sinusoidal.InOut, true);
+    }
+    
+}
+
 function yesBox() {
     
     actionDialog.visible = false;
@@ -328,7 +392,7 @@ function yesBox() {
     emptyFood.inputEnabled = true;
     emptyWater.inputEnabled = true;
     brush.inputEnabled = true;
-    
+    soap.inputEnabled = true;
     if (poop != null) {
         poop.inputEnabled = true;
     }
@@ -355,6 +419,11 @@ function yesBox() {
         
         poop.pendingDestroy = true;
         poop = null;
+    } else if (action == 'bathe') {
+        tranDes = "Bathe pet";
+        tranVal = 10;
+        
+        addBubbles();
     }
     
     document.getElementById('addTran').click();
@@ -368,8 +437,9 @@ function noBox() {
     emptyFood.inputEnabled = true;
     emptyWater.inputEnabled = true;
     brush.inputEnabled = true;
+    soap.inputEnabled = true;
     if (poop != null) {
-        poop.inputEnabled = false;
+        poop.inputEnabled = true;
     }
 
 }
