@@ -8,8 +8,6 @@ pettycash.controller('GoalsController', function($scope) {
         maintainAspectRation: true,
         responsive: true
     };
-    
-    $scope.colors = ['#46bfbd', '#dcdcdc'];
  
     goalList.addGoal = function() {
         
@@ -64,6 +62,7 @@ pettycash.controller('GoalsController', function($scope) {
         this.contributions = 0;
         this.labels = ["Contributions", "Remaining"]; //chart labels
         this.data = [0, this.amount]; //chart data
+        this.colors = ['#46bfbd', '#dcdcdc']; //chart colors
     }
     
 }).filter('priority', function() { //filter for displaying priority as text

@@ -89,7 +89,7 @@ function fetchRecords() {
             throw response.errors[0];
         } else {
             angular.forEach(response.records, function(record, key) {
-                var goal = {name:record.recordName, description:record.fields.description.value, startDate:record.fields.startDate.value, endDate:record.fields.endDate.value, amount:record.fields.amount.value, priority:record.fields.priority.value, contributions:0, data:[0, 0], labels:["Contributions", "Remaining"]};
+                var goal = {name:record.recordName, description:record.fields.description.value, startDate:record.fields.startDate.value, endDate:record.fields.endDate.value, amount:record.fields.amount.value, priority:record.fields.priority.value, contributions:0, data:[0, 0], labels:["Contributions", "Remaining"], colors:['#46bfbd', '#dcdcdc']};
                 goals.push(goal);
             });
             setTimeout(function() {

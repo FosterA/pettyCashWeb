@@ -9,7 +9,11 @@ function setUpAuth() {
       if(name) {
         displayUserName(name.givenName + ' ' + name.familyName);
       } else {
-        displayUserName('User record name: ' + userIdentity.userRecordName);
+        if (userIdentity.userRecordName == '_bb5bc7e827f283a4eab12e6ca4abf480') {
+            displayUserName('Hello, Ben Friedman');
+        } else {
+            displayUserName('User record name: ' + userIdentity.userRecordName);
+        }
         fetchRecords(); //fetch goals and transactions after login
       }
       container

@@ -46,6 +46,20 @@ pettycash.controller('TransactionsController', function() {
             
             goal.data[0] = goal.contributions; //update chart data contributions
             goal.data[1] = goal.amount-goal.contributions; //update chart data remaining
+            
+            if (goal.data[1] <= 0) {
+                goal.data[1] = 0; //set remaining to 0
+                goal.colors[0] = '#5bef25';
+                
+                var selectBox = document.getElementById('goalSelect'); //get goal select box
+                angular.forEach(selectBox.options, function(option) {
+                    if (option.value == goal.name) {
+                        option.remove(); //remove option if remaining 0
+                    }
+                });
+            } else {
+                goal.colors[0] = '#46bfbd';
+            }
         });
     };
     
