@@ -51,3 +51,9 @@ ul {
 .Aligner-item {
   max-width: 50%;
 }
+.color-green {
+  color: green;
+}
+.color-red {
+  color: red;
+}
