@@ -7,4 +7,7 @@ pettycash.config(function($routeProvider) {
     .when("/expenses", {
         templateUrl : "expenses.html"
     })
-});
+    .otherwise({ redirectTo: '/'});
+}).controller('navController', function() {
+  this.currentNavItem = "Home";
+});;
