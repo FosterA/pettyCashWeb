@@ -45,6 +45,7 @@
                     <span>
                         <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
                         <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
+
                     </span>
                 </li>
             </ul>
@@ -86,9 +87,37 @@
 </script>
 
 <script type="text/ng-template" id="expenses.html">
-  <md-content>
-    <h2>Motha fuckin expenses</h2>
-  </md-content>
+  <div class="Aligner"?
+  <div ng-controller="ExpensesController as exp" ng-cloak="" layout-gt-sm="row" layout="column" class="Aligner-item" >
+
+  <div flex-gt-sm="80" flex>
+
+    <md-toolbar layout="row" class="md-hue-3">
+      <div class="md-toolbar-tools">
+        <span>What you have spent your money on.</span>
+      </div>
+    </md-toolbar>
+
+    <md-content>
+      <md-list flex>
+        <md-subheader class="md-no-sticky">info</md-subheader>
+        <md-divider></md-divider>
+        <md-list-item class="md-3-line" ng-click="null" ng-repeat="x in expenses">
+          <img ng-src="" class="md-avatar" alt="IMG">
+          <div class="md-list-item-text" layout="column">
+            <h3>{{x.name}}</h3>
+            <p>{{x.date}}</p>
+          </div>
+          <div layout-align="end center">
+            <h2>{{x.amount}}</h2>
+          </div>
+        </md-list-item>
+        <md-divider></md-divider>
+        </md-list>
+      </md-content>
+  </div>
+</div>
+</div>
 </script>
 
 </body>
@@ -108,6 +137,7 @@
   <script src="cloudkit/ckconfig.js"></script>
   <script src="pet.js"></script>
   <script src="controllers/goals.js"></script>
+  <script src="controllers/expenses.js"></script>
   <script src="controllers/transactions.js"></script>
   <script src="cloudkit/authentication.js"></script>
   <script src="cloudkit/query.js"></script>
