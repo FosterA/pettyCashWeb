@@ -35,7 +35,10 @@ pettycash.controller('TransactionsController', function() {
                 if (transaction.reference == goal.name) { //check goal's name matches reference
                     goal.contributions += transaction.amount; //increment contributions
                 } 
-            }); 
+            });
+            
+            goal.data[0] = goal.contributions; //update chart data contributions
+            goal.data[1] = goal.amount-goal.contributions; //update chart data remaining
         });
     };
     

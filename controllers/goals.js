@@ -1,8 +1,15 @@
-pettycash.controller('GoalsController', function() {
+pettycash.controller('GoalsController', function($scope) {
     
     var goalList = this; //scope
     goalList.goals = []; //goals array on scope
     var today = Date.parse(new Date()); //today's date
+    
+    $scope.options = {
+        maintainAspectRation: true,
+        responsive: true
+    };
+    
+    $scope.colors = ['#46bfbd', '#dcdcdc'];
  
     goalList.addGoal = function() {
         
@@ -19,16 +26,23 @@ pettycash.controller('GoalsController', function() {
         } else if (isNaN(parseInt(goalList.newPrty))) { //check if priority selected
             window.alert("Please Select Priority");
         } else {
-            var newGoal = new Goal(goalList.newDes, end, goalList.newVal, goalList.newPrty); //create new goal object
+            var name = Date.now().toString(); //timestamp as unique id
+            var newGoal = new Goal(name, goalList.newDes, end, goalList.newVal, goalList.newPrty); //create new goal object
             goalList.goals.push(newGoal); //add new goal to array
             saveRecord(newGoal, 'Goal'); //save new goal to cloudkit
             document.getElementById('goalForm').reset(); //clear goal form inputs
+            
+            var selectBox = document.getElementById('goalSelect'); //get goal select box
+            selectBox.options.add(new Option(goalList.newDes, name)); //add new goal to options of select box
         }
     };
     
     goalList.delete = function(goal, index) {
         goalList.goals.splice(index, 1); //remove goal from array
         deleteRecord(goal); //delete goal from cloudkit
+        
+        var selectBox = document.getElementById('goalSelect'); //get goal select box
+        selectBox.options[index].remove(); //remove deleted goal
     };
     
     goalList.loadGoals = function() {
@@ -40,14 +54,16 @@ pettycash.controller('GoalsController', function() {
         });
     };
     
-    function Goal(description, endDate, amount, priority) {
-        this.name = Date.now().toString(); //timestamp as unique id
+    function Goal(name, description, endDate, amount, priority) {
+        this.name = name;
         this.description = description;
         this.startDate = today; //goal created today
         this.endDate = endDate;
         this.amount = amount;
         this.priority = parseInt(priority); //store priority as integer
         this.contributions = 0;
+        this.labels = ["Contributions", "Remaining"]; //chart labels
+        this.data = [0, this.amount]; //chart data
     }
     
 }).filter('priority', function() { //filter for displaying priority as text

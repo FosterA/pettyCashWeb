@@ -47,6 +47,8 @@
                         <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
 
                     </span>
+                    <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="goal.labels" chart-options="options" 
+                            chart-colors="colors" height="25"></canvas> 
                 </li>
             </ul>
             <form id="goalForm" ng-submit="goalList.addGoal()">
