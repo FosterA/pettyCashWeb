@@ -23,7 +23,7 @@ function preload() {
 
 var button, popup;
 var animal, house, ball, brush, poop;
-var animalStarX;
+var boundary;
 var tweenGrow = null;
 var tweenShrink = null;
 var tweenMove = null; 
@@ -125,20 +125,17 @@ function moveAgain() {
 }
 
 function fetchBall() {
-    
     game.add.tween(animal).to({x: ball.x - 30}, 1000, Phaser.Easing.Default, true);
 }
 
 function moveBall() {
     
     var newX = game.world.randomX;
-    
-    while (newX <= animalStartX + 100 || newX >= 870) {
+    while (newX <= boundary || newX >= 870) {
         newX = game.world.randomX;
     }
     
     tweenMove = game.add.tween(ball).to({x: newX}, 500, Phaser.Easing.Default, true);
-    
     tweenMove.onComplete.add(fetchBall, this);
 
 }
@@ -147,8 +144,9 @@ function addBasic(pet) {
 
     type = pet;
     animal = game.add.button(game.world.centerX - 100, game.world.centerY + 100, pet, moveAgain);
-    animalStartX = game.world.centerX - 100;
     animal.scale.set(0.15);
+    
+    boundary = game.world.centerX - 100;
     
     house = game.add.image(game.world.centerX - 415, game.world.centerY + 0, 'dog-house');
     house.scale.set(0.40);
@@ -165,18 +163,19 @@ function addBasic(pet) {
     fullWater.scale.set(0.18);
     fullWater.visible = false;
     
-    ball = game.add.button(game.world.centerX + 200, game.world.centerY + 165, 'dog-ball', moveBall);
+    ball = game.add.button(game.world.centerX + 200, game.world.centerY + 172, 'dog-ball', moveBall);
     ball.scale.set(0.08);
     
     brush = game.add.button(game.world.centerX - 200, game.world.centerY + 165, 'dog-brush', groomPet);
     brush.scale.set(0.08);
     
-    var chance = Math.floor((Math.random() * 10) + 1);
-    
+    var chance = Math.floor((Math.random() * 10) + 1);  
     if (chance%3 == 0) {
-        poop = game.add.button(game.world.randomX, game.world.centerY + 180, 'dog-poop', pickupPoop);
-        poop.scale.set(0.075);
+        
+        poop = game.add.button(game.world.centerX, game.world.centerY + 180, 'dog-poop', pickupPoop);
+        poop.scale.set(0.065);
         poop.anchor.set(0.5);
+        
     }
 
 }
@@ -355,6 +354,7 @@ function yesBox() {
         tranVal = 2;
         
         poop.pendingDestroy = true;
+        poop = null;
     }
     
     document.getElementById('addTran').click();
