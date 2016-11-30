@@ -39,7 +39,7 @@ ul {
   margin-bottom: 10px;
 }
 #lowerDiv {
-  height: 300px;
+  height: auto;
   padding: 20px;
   margin-bottom: 10px;
 }

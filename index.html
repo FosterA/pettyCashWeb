@@ -3,7 +3,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.6/angular-datepicker.min.css">
   <link rel="stylesheet" href="content/css/pettycash.css">
 </head>
 
@@ -12,8 +11,8 @@
   <div ng-cloak="" class="navBarDemo">
       <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
         <div class="md-display-1" id="title">PettyCash</div>
+        <md-nav-item md-nav-click="goto('page2')" name="Home">Home</md-nav-item>
         <md-nav-item md-nav-href="#expenses" name="Expenses">Expenses</md-nav-item>
-        <md-nav-item md-nav-click="goto('page2')" name="page2">Page Two</md-nav-item>
         <md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>
         <md-nav-item md-nav-click="goto('page4')" name="page4">Page Four</md-nav-item>
         <span flex></span>
@@ -26,7 +25,6 @@
   <div class=ng-view></div>
 
 <script type="text/ng-template" id="home.html">
-  <md-content>
   <div layout="row" id="petGameDiv">
     <div flex="30">
       <h2>Pet Game</h2>
@@ -55,9 +53,6 @@
                 <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
 
                 <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
-                <!-- <datepicker date-format="longDate" ng-style="{width: 146 + 'px'}">
-                    <input ng-model="goalList.newEnd" type="text">
-                </datepicker><br> -->
                 <select ng-model="goalList.newPrty" name="priority">
                     <option value="">-- choose priority --</option>
                     <option value="1">low</option>
@@ -88,12 +83,15 @@
         </div>
       </div>
     </div>
-  </md-content>
 </script>
 
 <script type="text/ng-template" id="expenses.html">
-  <h2>Insert Expenses Here</h2>
+  <md-content>
+    <h2>Motha fuckin expenses</h2>
+  </md-content>
 </script>
+
+</body>
   <!--must include Angular first -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
@@ -117,7 +115,7 @@
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 
-</body>
+
 </html>
 
 <!--
