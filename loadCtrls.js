@@ -1,4 +1,4 @@
-var pettycash = angular.module('PettyCash', ['ngMaterial', 'ngRoute']);
+var pettycash = angular.module('PettyCash', ['ngMaterial', 'ngRoute', 'chart.js']);
 pettycash.config(function($routeProvider) {
     $routeProvider
     .when("/", {
