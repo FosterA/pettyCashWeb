@@ -14,10 +14,21 @@ pettycash.controller('TransactionsController', function() {
         } else {
             reference = selectBox.options[selectBox.selectedIndex].value; //get reference from selected option 
         }
-
-        var newTransaction = new Transaction(tranDes, tranVal, reference); //create new transaction object
-        transList.transactions.unshift(newTransaction); //add new transaction to front of array
-        saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
+        
+        var tra = 0;
+        angular.forEach(goals, function(goal) {
+            tra += goal.amount - goal.contributions;   
+        });
+        
+        angular.forEach(goals, function(goal) {
+            var daysRemain = Math.round((goal.endDate - today)/(1000*60*60*24));
+            var ica = (tra/(daysRemain*(goal.amount-goal.contributions)))*goal.priority*tranVal;
+            reference = goal.name;
+           
+            var newTransaction = new Transaction(tranDes, ica, reference); //create new transaction object
+            transList.transactions.unshift(newTransaction); //add new transaction to front of array
+            saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
+        });
         
         transList.setContributions(); //reload current contributions
         
