@@ -9,4 +9,4 @@ This project is an Angular web application using PhaserJS and Plaid Mock Transac
 - Angular Material Design http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js
 - PhaserJS https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js
 
-### Authors: Ben Friedmann and Alex Foster
+### Authors: Ben Friedman and Alex Foster
