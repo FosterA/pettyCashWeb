@@ -68,21 +68,25 @@
             <br>
           </div>
         </div>
-        <div flex="auto">
+        <md-content flex="auto">
           <div id="transactions" ng-controller="TransactionsController as transList">
             <h2>Transactions</h2>
+
             <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
             <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
-            <ul class="unstyled">
-              <li ng-repeat="transaction in transList.transactions track by $index">
+            <md-list class="md-dense">
+              <md-subheader class="md-no-sticky">Progress towards your goals.</md-subheader>
+              <md-list-item class="md-2-line" ng-repeat="transaction in transList.transactions track by $index">
                 <span>
+                  <span>{{transaction.description}}  {{transaction.amount | currency}}  {{transaction.date | date:'longDate'}}</span>
                   <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
-                  <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
+
                 </span>
-              </li>
-            </ul>
+              </md-list-item>
+              <md-divider></md-divider>
+            </md-list>
           </div>
-        </div>
+        </md-content>
       </div>
     </div>
     <!-- Expenses Div which is hidden by default using ng-show based on nav-selection -->
