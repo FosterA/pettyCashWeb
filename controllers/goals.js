@@ -7,8 +7,6 @@ pettycash.controller('GoalsController', function($scope) {
     $scope.labels = ['Contributions', 'Remaining'];
     
     $scope.options = {
-        maintainAspectRation: true,
-        responsive: true,
         cutoutPercentage: 70
     };
     //Add goal
