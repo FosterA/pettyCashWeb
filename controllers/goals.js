@@ -4,9 +4,12 @@ pettycash.controller('GoalsController', function($scope) {
     goalList.goals = []; //goals array on scope
     var today = Date.parse(new Date()); //today's date
 
+    $scope.labels = ['Contributions', 'Remaining'];
+    
     $scope.options = {
         maintainAspectRation: true,
-        responsive: true
+        responsive: true,
+        cutoutPercentage: 70
     };
     //Add goal
     goalList.addGoal = function() {
@@ -60,7 +63,6 @@ pettycash.controller('GoalsController', function($scope) {
         this.amount = amount;
         this.priority = parseInt(priority); //store priority as integer
         this.contributions = 0;
-        this.labels = ["Contributions", "Remaining"]; //chart labels
         this.data = [0, this.amount]; //chart data
         this.colors = ['#46bfbd', '#dcdcdc']; //chart colors
     }

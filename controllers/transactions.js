@@ -1,11 +1,11 @@
+//Controller to help with transactions and contributions
 pettycash.controller('TransactionsController', function() {
   
     var transList = this; //scope
     transList.transactions = []; //create transactions array on scope
     var today = Date.parse(new Date()); //today's date
  
-    transList.addTransaction = function() {
-        
+    transList.addTransaction = function() {  
         var selectBox = document.getElementById('goalSelect'); //get goal select box
         var reference;
         
@@ -17,23 +17,18 @@ pettycash.controller('TransactionsController', function() {
         
         var tra = 0;
         angular.forEach(goals, function(goal) {
-            tra += goal.amount - goal.contributions;   
+            tra += goal.amount - goal.contributions;  //calculate total remaining amount 
         });
         
         var upcoming = []; // transactions about to be saved to db
         
         angular.forEach(goals, function(goal) {
-            var amountRemain = goal.amount - goal.contributions;
+            var amountRemain = goal.amount - goal.contributions; //amount remaining for goal
             
             if (amountRemain > 0) { //only contribute if amount remaining
-                var daysRemain = Math.round((goal.endDate - today)/(1000*60*60*24));
-                var ica = (tra/(daysRemain*(goal.amount-goal.contributions)))*goal.priority*tranVal;
-                reference = goal.name;
+                var ica = transList.calcContributions(goal, tra, amountRemain); //calculate individual contribution amount foreach goal
+                reference = goal.name; //set transaction reference
                 
-                if (ica > amountRemain) {
-                    ica = amountRemain;
-                }
-           
                 var newTransaction = new Transaction(tranDes, ica, reference); //create new transaction object
                 transList.transactions.unshift(newTransaction); //add new transaction to front of array
                 upcoming.push(newTransaction); //populate upcoming saved records array
@@ -45,19 +40,24 @@ pettycash.controller('TransactionsController', function() {
         }
         
         transList.setContributions(); //reload current contributions
-        
     };
     
     transList.delete = function(transaction, index) {
         transList.transactions.splice(index, 1); //remove transaction from array
         deleteRecord(transaction); //delete transaction from cloudkit
         
-        angular.forEach(goals, function(goal) {
-            if (goal.name == transaction.reference) {
-                goal.contributions -= transaction.amount; //remove contribution
-            } 
-        });
         transList.setContributions(); //reload contributions
+    };
+    
+    transList.calcContributions = function(goal, tra, amountRemain) {
+        var daysRemain = Math.round((goal.endDate - today)/(1000*60*60*24)); //days until goal end date
+        var ica = (tra/(daysRemain*(goal.amount-goal.contributions)))*goal.priority*tranVal; //calculate individual contribution amount
+
+        if (ica > amountRemain) {
+            ica = amountRemain; //if ica greater than amount remaining, set ica to amount remaining
+        }
+        
+        return ica;
     };
     
     transList.setContributions = function() {
@@ -68,24 +68,27 @@ pettycash.controller('TransactionsController', function() {
                     goal.contributions += transaction.amount; //increment contributions
                 } 
             });
-            
-            goal.data[0] = goal.contributions; //update chart data contributions
-            goal.data[1] = goal.amount-goal.contributions; //update chart data remaining
-            
-            if (goal.data[1] <= 0) {
-                goal.data[1] = 0; //set remaining to 0
-                goal.colors[0] = '#5bef25';
-                
-                var selectBox = document.getElementById('goalSelect'); //get goal select box
-                angular.forEach(selectBox.options, function(option) {
-                    if (option.value == goal.name) {
-                        option.remove(); //remove option if remaining 0
-                    }
-                });
-            } else {
-                goal.colors[0] = '#46bfbd';
-            }
+            transList.updateChart(goal);
         });
+    };
+    //update contributions chart
+    transList.updateChart = function (goal) {
+        goal.data[0] = goal.contributions; //update chart data contributions
+        goal.data[1] = goal.amount-goal.contributions; //update chart data remaining
+            
+        if (goal.data[1] <= 0) {
+            goal.data[1] = 0; //set remaining to 0
+            goal.colors[0] = '#5bef25';
+
+            var selectBox = document.getElementById('goalSelect'); //get goal select box
+            angular.forEach(selectBox.options, function(option) {
+                if (option.value == goal.name) {
+                    option.remove(); //remove option if remaining 0
+                }
+            });
+        } else {
+            goal.colors[0] = '#46bfbd';
+        }
     };
     
     transList.loadTransactions = function() {
