@@ -27,7 +27,7 @@ pettycash.controller('GoalsController', function($scope) {
             var name = Date.now().toString(); //timestamp as unique id
             var newGoal = new Goal(name, goalList.newDes, end, goalList.newVal, goalList.newPrty); //create new goal object
             goalList.goals.push(newGoal); //add new goal to array
-            saveRecord(newGoal, 'Goal'); //save new goal to cloudkit
+            saveRecords(newGoal, 'Goal'); //save new goal to cloudkit
             document.getElementById('goalForm').reset(); //clear goal form inputs
 
             var selectBox = document.getElementById('goalSelect'); //get goal select box

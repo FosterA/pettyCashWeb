@@ -1,40 +1,46 @@
 var container = CloudKit.getDefaultContainer();
 var privateDB = container.privateCloudDatabase;
 // All CRUD operations for Cloudkit record storage
-function saveRecord(record, recordType) {
+function saveRecords(records, recordType) {
 
     var query;
-
-    if (recordType == 'Goal') {
-        query = {
-            recordName: record.name,
-            recordType: recordType,
-            fields: {
-                amount: {value: record.amount},
-                description: {value: record.description},
-                endDate: {value: record.endDate},
-                startDate: {value: record.startDate},
-                priority: {value: record.priority}
-            }
-        };
-    } else if (recordType == 'Transaction') {
-        query = {
-            recordName: record.name,
-            recordType: recordType,
-            fields: {
-                amount: {value: record.amount},
-                description: {value: record.description},
-                date: {value: record.date},
-                goal: {
-                    value: {
-                        recordName: record.reference,
-                        action: 'NONE',
-                        zoneID: {
-                            zoneName: 'savings',
-                            ownerRecordName: user
+    
+    if (recordType == 'Transaction') {
+        query = [];
+        
+        angular.forEach(records, function(record) {
+            var rec = {
+                recordName: record.name,
+                recordType: recordType,
+                fields: {
+                    amount: {value: record.amount},
+                    description: {value: record.description},
+                    date: {value: record.date},
+                    goal: {
+                        value: {
+                            recordName: record.reference,
+                            action: 'NONE',
+                            zoneID: {
+                                zoneName: 'savings',
+                                ownerRecordName: user
+                            }
                         }
                     }
                 }
+            };
+            
+            query.push(rec);
+        });
+    } else if (recordType == 'Goal') {
+        query = {
+            recordName: records.name,
+            recordType: recordType,
+            fields: {
+                amount: {value: records.amount},
+                description: {value: records.description},
+                endDate: {value: records.endDate},
+                startDate: {value: records.startDate},
+                priority: {value: records.priority}
             }
         };
     }

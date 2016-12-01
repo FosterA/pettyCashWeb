@@ -20,15 +20,29 @@ pettycash.controller('TransactionsController', function() {
             tra += goal.amount - goal.contributions;   
         });
         
+        var upcoming = []; // transactions about to be saved to db
+        
         angular.forEach(goals, function(goal) {
-            var daysRemain = Math.round((goal.endDate - today)/(1000*60*60*24));
-            var ica = (tra/(daysRemain*(goal.amount-goal.contributions)))*goal.priority*tranVal;
-            reference = goal.name;
+            var amountRemain = goal.amount - goal.contributions;
+            
+            if (amountRemain > 0) { //only contribute if amount remaining
+                var daysRemain = Math.round((goal.endDate - today)/(1000*60*60*24));
+                var ica = (tra/(daysRemain*(goal.amount-goal.contributions)))*goal.priority*tranVal;
+                reference = goal.name;
+                
+                if (ica > amountRemain) {
+                    ica = amountRemain;
+                }
            
-            var newTransaction = new Transaction(tranDes, ica, reference); //create new transaction object
-            transList.transactions.unshift(newTransaction); //add new transaction to front of array
-            saveRecord(newTransaction, 'Transaction'); //save new transaction to cloudkit
+                var newTransaction = new Transaction(tranDes, ica, reference); //create new transaction object
+                transList.transactions.unshift(newTransaction); //add new transaction to front of array
+                upcoming.push(newTransaction); //populate upcoming saved records array
+            }
         });
+        
+        if (upcoming.length > 0) {
+            saveRecords(upcoming, 'Transaction'); //save array of transactions
+        }
         
         transList.setContributions(); //reload current contributions
         
@@ -80,7 +94,7 @@ pettycash.controller('TransactionsController', function() {
     };
     
     function Transaction(description, amount, reference) {
-        this.name = Date.now().toString(); //timestamp as unique id
+        this.name = Date.now().toString() + Math.random().toString(); //timestamp as unique id
         this.description = description;
         this.date = today; //transaction occured today
         this.amount = amount;
