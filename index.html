@@ -1,14 +1,13 @@
 <html lang="en" >
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Angular Material style sheet -->
+  <!--style sheets -->
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
   <link rel="stylesheet" href="content/css/pettycash.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
+<!-- Declaring our Angular App and tying in our NavController-->
 <body ng-app="PettyCash" ng-controller="navController as NC" ng-cloak>
-  <!--<md-content class="md-padding">-->
   <div class="navBarDemo" ng-cloak>
       <md-nav-bar md-selected-nav-item="NC.currentNavItem" nav-bar-aria-label="navigation links">
         <div class="md-display-1" id="title">PettyCash</div>
@@ -17,111 +16,106 @@
         <md-nav-item md-nav-click="goto('page3')" name="page3">Analytics</md-nav-item>
         <md-nav-item md-nav-click="goto('page4')" name="page4">Settings</md-nav-item>
         <span flex></span>
+        <!-- Apple sign in-->
         <md-nav-item name="username" id="displayed-username"></md-nav-item>
         <span></span>
         <div id="apple-sign-in-button"></div>
         <div id="apple-sign-out-button"></div>
       </md-nav-bar>
   </div>
-  <!-- <div class=ng-view> -->
-
-<!-- <script type="text/ng-template" id="home.html"> -->
-<div ng-show="NC.currentNavItem == 1">
-  <div layout="row" id="petGameDiv">
-    <div flex="30">
-      <h2>Pet Game</h2>
-      <label>Select goal for contribution: </label>
-      <select id="goalSelect"></select>
-    </div>
-    <div flex="60" id="petGame"></div>
-    <div flex="10"></div>
-  </div>
-
-  <div layout="column" id="lowerDiv">
-    <div flex="auto">
-      <h2>Goals</h2>
-      <div id="goals" ng-controller="GoalsController as goalList">
-        <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-        <ul class="unstyled">
-          <li ng-repeat="goal in goalList.goals track by $index">
-            <span>
-              <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
-              <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
-            </span>
-            <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="goal.labels" chart-options="options" chart-colors="goal.colors" height="25"></canvas>
-          </li>
-        </ul>
-          <form id="goalForm" ng-submit="goalList.addGoal()">
-              <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here">
-              <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
-
-              <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
-              <select ng-model="goalList.newPrty" name="priority">
-                  <option value="">-- choose priority --</option>
-                  <option value="1">low</option>
-                  <option value="2">medium</option>
-                  <option value="3">high</option>
-              </select>
-              <br>
-              <md-button class="md-raised" type="submit" value="add">submit</md-button>
-              <br>
-          </form>
-          <br>
-        </div>
+  <!--This is our Home div. It is shown by default but will be hidden if another tab on the nav bar is selected -->
+  <!-- We opted for the ng-show/ng-hide implementation because ng-Route would not reload PhaserJS properly when returning home -->
+  <div ng-show="NC.currentNavItem == 1">
+    <div layout="row" id="petGameDiv">
+      <div flex="30">
+        <h2>Pet Game</h2>
+        <label>Select goal for contribution: </label>
+        <select id="goalSelect"></select>
       </div>
+      <div flex="60" id="petGame"></div>
+      <div flex="10"></div>
+    </div>
+    <!-- Goals and Transactions tables -->
+    <div layout="column" id="lowerDiv">
       <div flex="auto">
-        <div id="transactions" ng-controller="TransactionsController as transList">
-          <h2>Transactions</h2>
-          <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
-          <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
+        <h2>Goals</h2>
+        <div id="goals" ng-controller="GoalsController as goalList">
+          <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
           <ul class="unstyled">
-            <li ng-repeat="transaction in transList.transactions track by $index">
+            <li ng-repeat="goal in goalList.goals track by $index">
               <span>
-                <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
-                <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
+                <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
+                <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
               </span>
+              <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="goal.labels" chart-options="options" chart-colors="goal.colors" height="25"></canvas>
             </li>
           </ul>
+            <form id="goalForm" ng-submit="goalList.addGoal()">
+                <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here">
+                <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
+
+                <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
+                <select ng-model="goalList.newPrty" name="priority">
+                    <option value="">-- choose priority --</option>
+                    <option value="1">low</option>
+                    <option value="2">medium</option>
+                    <option value="3">high</option>
+                </select>
+                <br>
+                <md-button class="md-raised" type="submit" value="add">submit</md-button>
+                <br>
+            </form>
+            <br>
+          </div>
+        </div>
+        <div flex="auto">
+          <div id="transactions" ng-controller="TransactionsController as transList">
+            <h2>Transactions</h2>
+            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
+            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
+            <ul class="unstyled">
+              <li ng-repeat="transaction in transList.transactions track by $index">
+                <span>
+                  <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
+                  <span>{{transaction.description}}****{{transaction.amount | currency}}****{{transaction.date | date:'longDate'}}</span>
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-
-<!-- <script type="text/ng-template" id="expenses.html"> -->
-<div class="Aligner" ng-show='NC.currentNavItem == 2'>
-    <div ng-controller="ExpensesController as exp" ng-cloak="" layout-gt-sm="row" layout="column" class="Aligner-item" flex=80>
-
-      <div flex>
-        <md-toolbar layout="row" class="md-hue-3">
-          <div class="md-toolbar-tools">
-            <span>What you have spent money on.</span>
+    <!-- Expenses Div which is hidden by default using ng-show based on nav-selection -->
+    <div class="Aligner" ng-show='NC.currentNavItem == 2'>
+        <div ng-controller="ExpensesController as exp" ng-cloak="" layout-gt-sm="row" layout="column" class="Aligner-item" flex=80>
+          <div flex>
+            <md-toolbar layout="row" class="md-hue-3">
+              <div class="md-toolbar-tools">
+                <span>What you have spent money on.</span>
+              </div>
+            </md-toolbar>
+            <md-content>
+              <md-list class="md-dense" flex>
+                <md-subheader class="md-no-sticky">info</md-subheader>
+                <md-divider></md-divider>
+                <md-list-item class="md-2-line" ng-click="null" ng-repeat="x in expenses">
+                  <i class="material-icons md-avatar">attach_money</i>
+                  <div class="md-list-item-text" layout="column">
+                    <h3>{{x.name}}</h3>
+                    <p>{{x.date | date:'medium'}}</p>
+                  </div>
+                  <div layout-align="end center">
+                    <h3 ng-class="{'color-red': x.amount > 0, 'color-green': x.amount < 0}">{{x.amount | deposit | currency}}</h3>
+                  </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                </md-list>
+              </md-content>
+              </div>
           </div>
-        </md-toolbar>
-
-          <md-content>
-            <md-list class="md-dense" flex>
-              <md-subheader class="md-no-sticky">info</md-subheader>
-              <md-divider></md-divider>
-              <md-list-item class="md-2-line" ng-click="null" ng-repeat="x in expenses">
-                <i class="material-icons md-avatar">attach_money</i>
-                <div class="md-list-item-text" layout="column">
-                  <h3>{{x.name}}</h3>
-                  <p>{{x.date | date:'medium'}}</p>
-                </div>
-                <div layout-align="end center">
-                  <h3 ng-class="{'color-red': x.amount > 0, 'color-green': x.amount < 0}">{{x.amount | deposit | currency}}</h3>
-                </div>
-              </md-list-item>
-              <md-divider></md-divider>
-              </md-list>
-            </md-content>
-          </div>
-      </div>
-</div>
-<!-- </div> -->
-<!-- </script> -->
+    </div>
 </body>
+  <!--Dependencies  -->
   <!--must include Angular first -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
   <!-- Angular Material requires Angular.js Libraries -->
@@ -134,21 +128,19 @@
   <script src="https://cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.6/angular-datepicker.min.js"></script>
   <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
+  <!-- configs -->
   <script src="loadCtrls.js"></script>
   <script src="cloudkit/ckconfig.js"></script>
+  <!-- game scripts -->
   <script src="pet.js"></script>
+  <!-- Angular controllers -->
   <script src="controllers/goals.js"></script>
   <script src="controllers/expenses.js"></script>
   <script src="controllers/transactions.js"></script>
+  <!-- CloudKit auth and data retrieval -->
   <script src="cloudkit/authentication.js"></script>
   <script src="cloudkit/query.js"></script>
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-
-
 </html>
-
-<!--
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
--->
+<!--Authors: Ben Friedmann and Alex Foster. Capstone FS2016 Group 3, PettyCash. MU.  -->

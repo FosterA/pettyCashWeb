@@ -1,5 +1,5 @@
 var user;
-
+// Used for authentication following Apple's standards found in their CloudKitJS documentation
 function setUpAuth() {
     // Get the container.
     var container = CloudKit.getDefaultContainer();

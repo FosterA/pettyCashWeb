@@ -1,10 +1,10 @@
 var container = CloudKit.getDefaultContainer();
 var privateDB = container.privateCloudDatabase;
-
+// All CRUD operations for Cloudkit record storage
 function saveRecord(record, recordType) {
-    
+
     var query;
-    
+
     if (recordType == 'Goal') {
         query = {
             recordName: record.name,
@@ -30,7 +30,7 @@ function saveRecord(record, recordType) {
                         recordName: record.reference,
                         action: 'NONE',
                         zoneID: {
-                            zoneName: 'savings', 
+                            zoneName: 'savings',
                             ownerRecordName: user
                         }
                     }
@@ -38,7 +38,7 @@ function saveRecord(record, recordType) {
             }
         };
     }
-    
+
     privateDB.saveRecords(query, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             var ckError = response.errors[0];
@@ -47,11 +47,11 @@ function saveRecord(record, recordType) {
             var recordResponse = response.records[0];
         }
     });
-    
-}
 
+}
+// delete records when the x button is clicked
 function deleteRecord(removed) {
-    
+
     privateDB.deleteRecords(removed.name, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             var ckError = response.errors[0];
@@ -60,22 +60,22 @@ function deleteRecord(removed) {
             var recordResponse = response.records[0];
         }
     });
-    
-}
 
+}
+// declare arrays for goals and transactions
 var goals = [];
 var transactions = [];
 
 function fetchRecords() {
-    
+
     var goalQuery = {
         recordType: 'Goal',
         sortBy: [{
             fieldName: 'priority',
             ascending: false
-        }]  
+        }]
     };
-    
+
     var transactionQuery = {
         recordType: 'Transaction',
         sortBy: [{
@@ -97,19 +97,19 @@ function fetchRecords() {
             }, 250);
         }
     });
-    
+
     privateDB.performQuery(transactionQuery, {zoneID: 'savings'}).then(function(response) {
         if (response.hasErrors) {
             throw response.errors[0];
         } else {
             angular.forEach(response.records, function(record, key) {
-                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value, reference:record.fields.goal.value.recordName};  
+                var transaction = {name:record.recordName, description:record.fields.description.value, date:record.fields.date.value, amount:record.fields.amount.value, reference:record.fields.goal.value.recordName};
                 transactions.push(transaction);
             });
-            setTimeout(function() { 
+            setTimeout(function() {
                 document.getElementById('loadTrans').click();
             }, 250);
         }
     });
-    
+
 }

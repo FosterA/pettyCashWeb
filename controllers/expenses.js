@@ -1,8 +1,9 @@
 pettycash.controller('ExpensesController', ['$scope', '$http', function($scope, $http) {
-
+    // The Expenses controller makes a request to our AWS Application NodeJS server and retrieves a list of mocked transaction data
+    // The reason for needing an application middle-man server is so that if this project is continued, that server can be fully implemented to exchange actual client data from Plaid
     var today = Date.parse(new Date()); //today's date
     var url = "http://ec2-54-70-114-249.us-west-2.compute.amazonaws.com:3000/authenticate";
-
+    //CORS friendly Angular $http service call to retrieve JSON data
     $http({
         method: 'POST',
         url: url
@@ -17,7 +18,8 @@ pettycash.controller('ExpensesController', ['$scope', '$http', function($scope, 
     // or server returns response with an error status.
         console.log("failure");
     });
-}]).filter('deposit', function() { //filter for displaying priority as text
+}]).filter('deposit', function() {
+  //custom built angular filter for displaying priority as text w/o the negative symbol for deposits
     return function(expenseAmt) {
         if (expenseAmt < 0) {
           return expenseAmt.toString().slice(1);
