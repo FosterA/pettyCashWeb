@@ -14,21 +14,9 @@ pettycash.controller('GoalsController', function($scope) {
     //Add goal
     goalList.addGoal = function() {
 
-        var end = Date.parse(goalList.newEnd); //convert chosen end date to timestamp
-
-        if (!angular.isNumber(goalList.newVal)) { //check if amount is valid number
-            window.alert("Invalid Amount");
-        } else if (goalList.newVal == 0) {
-            window.alert("Amount must be greater than $0.00");
-        } else if (isNaN(end)){ //check if end date is valid date
-            window.alert("Invalid Date");
-        } else if (end <= today) { //check if end date is before today's date
-            window.alert("Date must be future date");
-        } else if (isNaN(parseInt(goalList.newPrty))) { //check if priority selected
-            window.alert("Please Select Priority");
-        } else {
-            var name = Date.now().toString(); //timestamp as unique id
-            var newGoal = new Goal(name, goalList.newDes, end, goalList.newVal, goalList.newPrty); //create new goal object
+        if (goalList.checkValid()) {
+            
+            var newGoal = new Goal(goalList.newDes, goalList.newEnd, goalList.newVal, goalList.newPrty); //create new goal object
             goalList.goals.push(newGoal); //add new goal to array
             saveRecords(newGoal, 'Goal'); //save new goal to cloudkit
             document.getElementById('goalForm').reset(); //clear goal form inputs
@@ -54,12 +42,31 @@ pettycash.controller('GoalsController', function($scope) {
             selectBox.options.add(new Option(goal.description, goal.name)); //add goals to options of select box
         });
     };
+    //check if new goal is valid
+    goalList.checkValid = function() {
+        var end = Date.parse(goalList.newEnd); //convert chosen end date to timestamp
+
+        if (!angular.isNumber(goalList.newVal)) { //check if amount is valid number
+            window.alert("Invalid Amount");
+        } else if (goalList.newVal == 0) {
+            window.alert("Amount must be greater than $0.00");
+        } else if (isNaN(end)){ //check if end date is valid date
+            window.alert("Invalid Date");
+        } else if (end <= today) { //check if end date is before today's date
+            window.alert("Date must be future date");
+        } else if (isNaN(parseInt(goalList.newPrty))) { //check if priority selected
+            window.alert("Please Select Priority");
+        } else {
+            return true; //valid
+        }
+        return false; //invalid
+    }
     //goal constructor
-    function Goal(name, description, endDate, amount, priority) {
-        this.name = name;
+    function Goal(description, endDate, amount, priority) {
+        this.name = Date.now().toString(); //timestamp as unique id;
         this.description = description;
         this.startDate = today; //goal created today
-        this.endDate = endDate;
+        this.endDate = Date.parse(endDate); //timestamp
         this.amount = amount;
         this.priority = parseInt(priority); //store priority as integer
         this.contributions = 0;
