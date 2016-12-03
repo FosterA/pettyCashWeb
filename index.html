@@ -47,7 +47,10 @@
                 <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
                 <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
               </span>
-              <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="labels" chart-options="options" chart-colors="goal.colors" height="25"></canvas>
+              <div id="canvas-wrap">
+                <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="labels" chart-options="options" chart-colors="goal.colors" height="25"></canvas>
+                <div id="overlay">100%</div>
+              </div>
             </li>
           </ul>
             <form id="goalForm" ng-submit="goalList.addGoal()">
@@ -103,7 +106,7 @@
                 <md-subheader class="md-no-sticky">info</md-subheader>
                 <md-divider></md-divider>
                 <md-list-item class="md-2-line" ng-click="null" ng-repeat="x in expenses">
-                  <i class="material-icons md-avatar">attach_money</i>
+                  <i class="material-icons md-avatar">{{getIcon(x)}}</i>
                   <div class="md-list-item-text" layout="column">
                     <h3>{{x.name}}</h3>
                     <p>{{x.date | date:'medium'}}</p>
@@ -130,7 +133,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.6/angular-datepicker.min.js"></script>
   <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
   <!-- configs -->
   <script src="loadCtrls.js"></script>

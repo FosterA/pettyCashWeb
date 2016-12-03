@@ -56,3 +56,14 @@ ul {
 .color-red {
   color: red;
 }
+
+#canvas-wrap { 
+  position:relative;
+}
+#overlay { 
+  position:absolute; 
+  top:42%; 
+  left:48.4%; 
+  font-family: Verdana; 
+  font-weight: bold; 
+}

@@ -12,12 +12,31 @@ pettycash.controller('ExpensesController', ['$scope', '$http', function($scope, 
     // when the response is available
         $scope.accounts = response.data.accounts;
         $scope.expenses = response.data.transactions;
+        console.log($scope.expenses);
 
     }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
         console.log("failure");
     });
+    
+    $scope.getIcon = function(expense) {
+        var icon = 'attach_money';
+        if (angular.isDefined(expense.category)) {
+            angular.forEach(expense.category, function(category) {
+                if (category == "Shops") {
+                    icon = 'shopping_cart';
+                } else if (category == "Restaurants") {
+                    icon = 'restaurant';
+                } else if (category == "Account Transfer") {
+                    icon = 'compare_arrows';
+                }
+            });
+        } else if (expense.name == "Golden Crepes") {
+            icon = 'restaurant';
+        }
+        return icon;  
+    };
 }]).filter('deposit', function() {
   //custom built angular filter for displaying priority as text w/o the negative symbol for deposits
     return function(expenseAmt) {
