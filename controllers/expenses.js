@@ -12,6 +12,7 @@ pettycash.controller('ExpensesController', ['$scope', '$http', function($scope, 
     // when the response is available
         $scope.accounts = response.data.accounts;
         $scope.expenses = response.data.transactions;
+        console.log($scope.accounts);
         console.log($scope.expenses);
 
     }, function errorCallback(response) {

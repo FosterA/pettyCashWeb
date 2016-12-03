@@ -77,8 +77,8 @@ function fetchRecords() {
     var goalQuery = {
         recordType: 'Goal',
         sortBy: [{
-            fieldName: 'priority',
-            ascending: false
+            fieldName: 'endDate',
+            ascending: true
         }]
     };
 
