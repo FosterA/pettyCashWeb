@@ -1,4 +1,4 @@
-<html lang="en" >
+<html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--style sheets -->
@@ -40,6 +40,7 @@
       <div flex="auto">
         <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
+          <md-button class="md-primary md-raised" ng-click="showCreateGoal($event)">Create Goal</md-button>
           <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
           <ul class="unstyled">
             <li ng-repeat="goal in goalList.goals track by $index">
@@ -53,22 +54,7 @@
               </div>
             </li>
           </ul>
-            <form id="goalForm" ng-submit="goalList.addGoal()">
-                <input type="text" ng-model="goalList.newDes" size="30" placeholder="add new goal here">
-                <input type="number" ng-model="goalList.newVal" size="30" placeholder="goal amount" min="0">
-
-                <md-datepicker ng-model="goalList.newEnd" md-placeholder="Enter date"></md-datepicker>
-                <select ng-model="goalList.newPrty" name="priority">
-                    <option value="">-- choose priority --</option>
-                    <option value="1">low</option>
-                    <option value="2">medium</option>
-                    <option value="3">high</option>
-                </select>
-                <br>
-                <md-button class="md-raised" type="submit" value="add">submit</md-button>
-                <br>
-            </form>
-            <br>
+          <br>
           </div>
         </div>
         <md-content flex="auto">

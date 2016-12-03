@@ -1,27 +1,60 @@
-pettycash.controller('GoalsController', function($scope) {
+pettycash.controller('GoalsController', function($scope, $mdDialog) {
 
     var goalList = this; //scope
     goalList.goals = []; //goals array on scope
     var today = Date.parse(new Date()); //today's date
 
-    $scope.labels = ['Contributions', 'Remaining'];
+    $scope.labels = ['Contributions', 'Remaining']; //chart labels
     
-    $scope.options = {
+    $scope.options = { //chart options
         cutoutPercentage: 70
+    };
+    //function to dynamically create modal for creating goals
+    $scope.showCreateGoal = function(ev) {
+        $mdDialog.show({
+            template: '<md-dialog><form ng-cloak><md-toolbar><div class="md-toolbar-tools"><h2>Create New Goal</h2><span flex></span><md-button class="md-icon-button" ng-click="cancel()"><md-icon class="material-icons">close</md-icon></md-button></div></md-toolbar><md-dialog-content><div class="md-dialog-content"><div layout-gt-sm="row"><md-input-container><label>Goal</label><input type="text" ng-model="newDes" required></md-input-container></div><div layout-gt-sm="row"><md-input-container><label>Amount</label><input type="number" ng-model="newVal" required></md-input-container><md-input-container><md-datepicker ng-model="newEnd" md-placeholder="Enter date" required></md-datepicker></md-input-container><md-input-container><label>Priority</label><md-select ng-model="newPrty" required><md-optgrp><md-option ng-value="1">Low</md-option><md-option ng-value="2">Medium</md-option><md-option ng-value="3">High</md-option></md-optgrp></md-select></md-input-container></div></div></md-dialog-content><md-dialog-actions layout="row"><span flex></span><md-button ng-click="create()">Create</md-button></md-dialog-actions></form></md-dialog>',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose:true,
+            controller: function DialogController($scope, $mdDialog) { //controller to handle modal actions
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.create = function() {
+                    //set new goal fields
+                    goalList.newDes = $scope.newDes;
+                    goalList.newVal = $scope.newVal;
+                    goalList.newEnd = $scope.newEnd;
+                    goalList.newPrty = $scope.newPrty;
+                    //check if fields are valid, then hide modal and add goal
+                    if (goalList.checkValid()) {
+                        $mdDialog.hide();
+                        goalList.addGoal();
+                    }
+                };
+            }
+        });
     };
     //Add goal
     goalList.addGoal = function() {
-
-        if (goalList.checkValid()) {
             
-            var newGoal = new Goal(goalList.newDes, goalList.newEnd, goalList.newVal, goalList.newPrty); //create new goal object
-            goalList.goals.push(newGoal); //add new goal to array
-            saveRecords(newGoal, 'Goal'); //save new goal to cloudkit
-            document.getElementById('goalForm').reset(); //clear goal form inputs
+        var newGoal = new Goal(goalList.newDes, goalList.newEnd, goalList.newVal, goalList.newPrty); //create new goal object
+        goalList.goals.push(newGoal); //add new goal to array
+        saveRecords(newGoal, 'Goal'); //save new goal to cloudkit
+        $scope.newDes = null;
+        $scope.newVal = null;
+        $scope.newEnd = null;
+        $scope.newPrty = null;
 
-            var selectBox = document.getElementById('goalSelect'); //get goal select box
-            selectBox.options.add(new Option(goalList.newDes, name)); //add new goal to options of select box
-        }
+        var selectBox = document.getElementById('goalSelect'); //get goal select box
+        selectBox.options.add(new Option(goalList.newDes, name)); //add new goal to options of select box
     };
     //delete goals
     goalList.delete = function(goal, index) {
@@ -44,7 +77,9 @@ pettycash.controller('GoalsController', function($scope) {
     goalList.checkValid = function() {
         var end = Date.parse(goalList.newEnd); //convert chosen end date to timestamp
 
-        if (!angular.isNumber(goalList.newVal)) { //check if amount is valid number
+        if (angular.isUndefined(goalList.newDes) || goalList.newDes == null) {
+            window.alert("Please enter a goal description");
+        } else if (!angular.isNumber(goalList.newVal)) { //check if amount is valid number
             window.alert("Invalid Amount");
         } else if (goalList.newVal == 0) {
             window.alert("Amount must be greater than $0.00");
