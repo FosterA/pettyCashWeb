@@ -10,7 +10,7 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
         cutoutPercentage: 70,
         elements: {
             arc: {
-                borderColor: '#000000'
+                borderColor: '#dcdcdc'
             }
         }
     };
