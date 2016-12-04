@@ -28,8 +28,6 @@ function setUpAuth() {
       if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
         showDialogForPersistError();
       }
-        
-     //location.reload(true);
 
       displayUserName(' ');
       container
