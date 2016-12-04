@@ -51,7 +51,7 @@ function saveRecords(records, recordType) {
             throw ckError;
         } else {
             if (recordType == "Transaction") {
-                window.alert("Total Contribution Amount: $" + tca.toFixed(2));
+                window.alert("Total Contribution Amount: $" + tca);
             }
             var recordResponse = response.records[0];
         }

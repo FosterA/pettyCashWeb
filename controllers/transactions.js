@@ -59,7 +59,7 @@ pettycash.controller('TransactionsController', function() {
             ica = amountRemain; //if ica greater than amount remaining, set ica to amount remaining
         }
         
-        return ica;
+        return parseFloat(ica.toFixed(2));
     };
     
     transList.setContributions = function() {
