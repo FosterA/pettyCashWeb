@@ -20,7 +20,8 @@ ul {
 }
 
 #delete {
-    color: red;
+    margin-top: 38.5px;
+    margin-right: 15px;
 }
 
 #petGame {
@@ -63,7 +64,7 @@ ul {
 #overlay { 
   position:absolute; 
   top:42%; 
-  left:48.4%; 
+  left:42%; 
   font-family: Verdana; 
   font-weight: bold; 
 }

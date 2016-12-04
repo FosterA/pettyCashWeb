@@ -110,11 +110,11 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
 }).filter('priority', function() { //filter for displaying priority as text
     return function(priority) {
         if (priority == 1){
-            return 'low';
+            return 'Low';
         } else if (priority == 2){
-            return 'medium';
+            return 'Medium';
         } else {
-            return 'high';
+            return 'High';
         }
     }
 });

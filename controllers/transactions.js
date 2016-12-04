@@ -21,12 +21,14 @@ pettycash.controller('TransactionsController', function() {
         });
         
         var upcoming = []; // transactions about to be saved to db
+        tca = 0; //total contribution amount
         
         angular.forEach(goals, function(goal) {
             var amountRemain = goal.amount - goal.contributions; //amount remaining for goal
             
             if (amountRemain > 0) { //only contribute if amount remaining
                 var ica = transList.calcContributions(goal, tra, amountRemain); //calculate individual contribution amount foreach goal
+                tca += ica;
                 reference = goal.name; //set transaction reference
                 
                 var newTransaction = new Transaction(tranDes, ica, reference); //create new transaction object

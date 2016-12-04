@@ -38,23 +38,41 @@
     <!-- Goals and Transactions tables -->
     <div layout="column" id="lowerDiv">
       <div flex="auto">
-        <h2>Goals</h2>
         <div id="goals" ng-controller="GoalsController as goalList">
-          <md-button class="md-primary md-raised" ng-click="showCreateGoal($event)">Create Goal</md-button>
-          <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-          <ul class="unstyled">
-            <li ng-repeat="goal in goalList.goals track by $index">
-              <span>
-                <input id="delete" type="button" ng-click="goalList.delete(goal, $index)" value="X">
-                <span>{{goal.description}}****{{goal.amount | currency}}****{{goal.endDate | date:'longDate'}}****{{goal.priority | priority}}****Contributions: {{goal.contributions | currency}}</span>
-              </span>
-              <div id="canvas-wrap">
-                <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="labels" chart-options="options" chart-colors="goal.colors" height="25"></canvas>
-                <div id="overlay">100%</div>
+          <md-toolbar layout="row" class="md-hue-3">
+            <div class="md-toolbar-tools">
+              <span>Goals</span>
+              <span flex></span>
+              <md-button class="md-primary md-raised" ng-click="showCreateGoal($event)">Create Goal</md-button>
+            </div>
+          </md-toolbar>
+          <div layout="row">
+            <md-subheader class="md-no-sticky">Goal Info</md-subheader>
+            <span flex="75"></span>
+            <md-subheader class="md-no-stick">Contribution Chart</md-subheader>
+          </div>  
+          <md-content>  
+          <md-list>
+            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
+            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index">
+              <i title="hello" id="delete" type="button" ng-click="goalList.delete(goal, $index)" class="material-icons">delete</i>
+              <div class="md-list-item-text" layout="column">
+                <h3>{{goal.description}}</h3>
+                <p>Amount: {{goal.amount | currency}}</p>
+                <p>End Date: {{goal.endDate | date:'longDate'}}</p>
+                <p>Priority: {{goal.priority | priority}}</p>
               </div>
-            </li>
-          </ul>
-          <br>
+              <div layout-align="end center">
+                <div id="canvas-wrap">
+                  <canvas id="doughnut" class="chart chart-doughnut" chart-data="goal.data" chart-labels="labels" chart-options="options" chart-colors="goal.colors" height="100"></canvas>
+                  <div id="overlay"></div>
+                </div>
+              </div>
+              <md-divider></md-divider>
+            </md-list-item>
+            <br>
+          </md-list>
+          </md-content>  
           </div>
         </div>
         <md-content flex="auto">

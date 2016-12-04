@@ -50,6 +50,9 @@ function saveRecords(records, recordType) {
             var ckError = response.errors[0];
             throw ckError;
         } else {
+            if (recordType == "Transaction") {
+                window.alert("Total Contribution Amount: $" + tca.toFixed(2));
+            }
             var recordResponse = response.records[0];
         }
     });
@@ -71,6 +74,7 @@ function deleteRecord(removed) {
 // declare arrays for goals and transactions
 var goals = [];
 var transactions = [];
+var tca = 0;
 
 function fetchRecords() {
 
