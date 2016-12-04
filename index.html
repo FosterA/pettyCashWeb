@@ -26,15 +26,16 @@
   <!--This is our Home div. It is shown by default but will be hidden if another tab on the nav bar is selected -->
   <!-- We opted for the ng-show/ng-hide implementation because ng-Route would not reload PhaserJS properly when returning home -->
   <div ng-show="NC.currentNavItem == 1">
-    <div layout="row">
-      <span flex="20"></span>
-      <h2>Savings Pet</h2>  
-    </div>  
-    <div layout="row" id="petGameDiv">
-      <div flex="20"></div>
-      <div flex="80" id="petGame"></div>
-      <div flex="10"></div>
+    <div flex>
+    <md-toolbar id="petToolBar" layout="row" class="md-hue-3">
+      <div class="md-toolbar-tools">
+        <span>Savings Pet</span>
+      </div>   
+    </md-toolbar>
+    <div layout-align="center center" layout="row" id="petGameDiv">
+      <div id="petGame"></div>
     </div>
+      </div>
     <!-- Goals and Transactions tables -->
     <div layout="column" id="lowerDiv">
       <div flex="auto">
@@ -47,7 +48,8 @@
             </div>
           </md-toolbar>
           <div layout="row">
-            <md-subheader class="md-no-sticky">Goal Info</md-subheader>
+            <span flex="5"></span>
+            <md-subheader class="md-no-sticky">Info</md-subheader>
             <span flex="75"></span>
             <md-subheader class="md-no-stick">Contribution Chart</md-subheader>
           </div>  
@@ -109,7 +111,7 @@
             </md-toolbar>
             <md-content>
               <md-list class="md-dense" flex>
-                <md-subheader class="md-no-sticky">info</md-subheader>
+                <md-subheader class="md-no-sticky">Info</md-subheader>
                 <md-divider></md-divider>
                 <md-list-item class="md-2-line" ng-click="null" ng-repeat="x in expenses">
                   <i class="material-icons md-avatar">{{getIcon(x)}}</i>
