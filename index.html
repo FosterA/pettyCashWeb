@@ -54,8 +54,10 @@
           <md-content>  
           <md-list>
             <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index"> 
-              <i title="hello" id="delete" type="button" ng-click="goalList.delete(goal, $index)" class="material-icons">delete</i>
+            <md-list-item class="md-2-line" ng-click="null" ng-repeat="goal in goalList.goals track by $index"> 
+              <md-button class="md-primary" ng-click="goalList.delete(goal, $index)">
+                <md-icon title="delete" id="deleteIcon" class="material-icons">delete</md-icon>  
+              </md-button>
               <div class="md-list-item-text" layout="column">
                 <h3>{{goal.description}}</h3>
                 <p>Amount: {{goal.amount | currency}}</p>

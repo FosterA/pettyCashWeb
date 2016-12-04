@@ -68,3 +68,6 @@ ul {
   font-family: Verdana; 
   font-weight: bold; 
 }
+#deleteIcon {
+  color: black;
+}
