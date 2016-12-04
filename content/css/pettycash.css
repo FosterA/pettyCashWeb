@@ -1,31 +1,14 @@
-#loadGoals {
-    display: none;
-}
-
-#loadTrans {
-    display: none;
-}
-
-#addTran {
-    display: none;
-}
-
-li {
-    list-style-type: none;
-    margin-bottom: 3px;
-}
-
-ul {
-    padding-left: 0;
+.invBtn {
+  display: none;
 }
 
 #delete {
-    margin-top: 38.5px;
-    margin-right: 15px;
+  margin-top: 38.5px;
+  margin-right: 15px;
 }
 
 #petGame {
-    float: left;
+  float: left;
 }
 .navBarDemo {
   padding: 15px;

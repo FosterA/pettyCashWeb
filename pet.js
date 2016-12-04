@@ -100,7 +100,8 @@ function openWindow() {
 //
 //    tweenGrow = game.add.tween(popup.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
     if (!loggedIn) {
-        window.alert("You must be signed-in to interact with your pet");
+       // window.alert("You must be signed-in to interact with your pet");
+        dialog.show(dialog.alert({title: 'Not Signed-In', textContent: 'You must be signed-in to interact with your pet', ok: 'Close'}));
     } else {
         button.pendingDestroy = true;
         addBasic('dog');

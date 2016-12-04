@@ -51,7 +51,7 @@ function saveRecords(records, recordType) {
             throw ckError;
         } else {
             if (recordType == "Transaction") {
-                window.alert("Total Contribution Amount: $" + tca.toFixed(2));
+                dialog.show(dialog.alert({title: 'Total Contribution Amount', textContent: 'The recent pet action has contributed $' + tca.toFixed(2) + ' to your goals.', ok: 'Close'}));
             }
             var recordResponse = response.records[0];
         }
@@ -75,6 +75,7 @@ function deleteRecord(removed) {
 var goals = [];
 var transactions = [];
 var tca = 0;
+var dialog = null;
 
 function fetchRecords() {
 

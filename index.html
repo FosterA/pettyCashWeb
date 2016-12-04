@@ -44,7 +44,7 @@
             <div class="md-toolbar-tools">
               <span>Goals</span>
               <span flex></span>
-              <md-button class="md-primary md-raised" ng-click="showCreateGoal($event)">Create Goal</md-button>
+              <md-button class="md-primary md-raised" ng-click="goalList.checkLogin($event)">Create Goal</md-button>
             </div>
           </md-toolbar>
           <div layout="row">
@@ -55,8 +55,8 @@
           </div>  
           <md-content>  
           <md-list>
-            <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-            <md-list-item class="md-2-line" ng-click="null" ng-repeat="goal in goalList.goals track by $index"> 
+            <input type="button" class="invBtn" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
+            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index" ng-click="goalList.getTransactions(goal, $event)"> 
               <md-button class="md-primary" ng-click="goalList.delete(goal, $index)">
                 <md-icon title="delete" id="deleteIcon" class="material-icons">delete</md-icon>  
               </md-button>
@@ -81,21 +81,20 @@
         </div>
         <md-content flex="auto">
           <div id="transactions" ng-controller="TransactionsController as transList">
-            <h2>Transactions</h2>
-
-            <input type="button" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
-            <input type="button" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
+            <input type="button" class="invBtn" id="loadTrans" ng-click="transList.loadTransactions()" value="Load Transactions">
+            <input type="button" class="invBtn" id="addTran" ng-click="transList.addTransaction()" value="Add Transaction">
+<!--
             <md-list class="md-dense">
               <md-subheader class="md-no-sticky">Progress towards your goals.</md-subheader>
               <md-list-item class="md-2-line" ng-repeat="transaction in transList.transactions track by $index">
                 <span>
                   <span>{{transaction.description}}  {{transaction.amount | currency}}  {{transaction.date | date:'longDate'}}</span>
                   <input id="delete" type="button" ng-click="transList.delete(transaction, $index)" value="X">
-
                 </span>
               </md-list-item>
               <md-divider></md-divider>
             </md-list>
+-->
           </div>
         </md-content>
       </div>

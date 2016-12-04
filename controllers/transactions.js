@@ -1,5 +1,5 @@
 //Controller to help with transactions and contributions
-pettycash.controller('TransactionsController', function() {
+pettycash.controller('TransactionsController', function($scope, $mdDialog) {
   
     var transList = this; //scope
     transList.transactions = []; //create transactions array on scope

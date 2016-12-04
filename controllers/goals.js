@@ -3,6 +3,7 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
     var goalList = this; //scope
     goalList.goals = []; //goals array on scope
     var today = Date.parse(new Date()); //today's date
+    dialog = $mdDialog;
 
     $scope.labels = ['Contributions', 'Remaining']; //chart labels
     
@@ -47,6 +48,30 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
             }
         });
     };
+    
+    $scope.showGoalContributions = function(ev) {
+        $mdDialog.show({
+            template: '<md-dialog><md-toolbar><div class="md-toolbar-tools"><h2>{{goalName}}</h2><span flex></span><md-button class="md-icon-button" ng-click="cancel()"><md-icon class="material-icons">close</md-icon></md-button></div></md-toolbar><md-dialog-content><md-content><div id="canvas-wrap"><canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-options="options" chart-colors="colors" height="100"></canvas></div><md-list><md-list-item class="md-2-line" ng-repeat="transaction in transactions" layout="row"><div class="md-list-item-text" layout="column"><h3>{{transaction.description}}</h3><p>{{transaction.date | date:"longDate"}}</p></div><div flex></div><div layout-align="end center"><div><h3 class="color-green">{{transaction.amount | currency}}</h3></div></div><md-divider></md-divider></md-list-item><br></md-list></md-content></md-dialog-content></md-dialog>',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose:true,
+            controller: function DialogController($scope, $mdDialog) { //controller to handle modal actions
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.answer = function() {
+                    $mdDialog.cancel();
+                };
+            }
+        });
+    };
     //Add goal
     goalList.addGoal = function() {
             
@@ -74,7 +99,7 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
         if (angular.isUndefined(goalList.newDes) || goalList.newDes == null) {
             window.alert("Please enter a goal description");
         } else if (!angular.isNumber(goalList.newVal)) { //check if amount is valid number
-            window.alert("Invalid Amount");
+            window.alert("Invalid Amount. Please enter a valid number greater than $0.00");
         } else if (goalList.newVal == 0) {
             window.alert("Amount must be greater than $0.00");
         } else if (isNaN(end)){ //check if end date is valid date
@@ -87,6 +112,34 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
             return true; //valid
         }
         return false; //invalid
+    }
+    
+    goalList.checkLogin = function($event) {
+        if (loggedIn) {
+            $scope.showCreateGoal($event);
+        } else {
+            $mdDialog.show($mdDialog.alert({title: 'Not Signed-In', textContent: 'You must be signed-in to create goals', ok: 'Close'}));
+        }
+    }
+    
+    goalList.getTransactions = function(goal, $event) {
+        $scope.transactions = [];
+        $scope.colors = goal.colors;
+        $scope.data = goal.data;
+        $scope.goalName = goal.description;
+        
+        angular.forEach(transactions, function(transaction) {
+            if (transaction.reference == goal.name) {
+                $scope.transactions.push(transaction);
+            }
+        });
+        
+        if ($scope.transactions.length > 0) {
+            $scope.showGoalContributions($event);
+        } else {
+            $mdDialog.show($mdDialog.alert({title: 'No Contributions', textContent: 'This goal has no contributions to view', ok: 'Close'}));
+        }
+    
     }
     //goal constructor
     function Goal(description, endDate, amount, priority) {
