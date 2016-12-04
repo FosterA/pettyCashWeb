@@ -6,13 +6,11 @@ pettycash.controller('TransactionsController', function() {
     var today = Date.parse(new Date()); //today's date
  
     transList.addTransaction = function() {  
-        var selectBox = document.getElementById('goalSelect'); //get goal select box
+
         var reference;
         
-        if (selectBox.options.length == 0) {
+        if (goals.length == 0) {
             reference = "NoRef"; //if no goals available, set no reference
-        } else {
-            reference = selectBox.options[selectBox.selectedIndex].value; //get reference from selected option 
         }
         
         var tra = 0;
@@ -81,13 +79,6 @@ pettycash.controller('TransactionsController', function() {
         if (goal.data[1] <= 0) {
             goal.data[1] = 0; //set remaining to 0
             goal.colors[0] = '#5bef25';
-
-            var selectBox = document.getElementById('goalSelect'); //get goal select box
-            angular.forEach(selectBox.options, function(option) {
-                if (option.value == goal.name) {
-                    option.remove(); //remove option if remaining 0
-                }
-            });
         } else {
             goal.colors[0] = '#46bfbd';
         }

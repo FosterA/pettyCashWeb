@@ -7,7 +7,12 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
     $scope.labels = ['Contributions', 'Remaining']; //chart labels
     
     $scope.options = { //chart options
-        cutoutPercentage: 70
+        cutoutPercentage: 70,
+        elements: {
+            arc: {
+                borderColor: '#000000'
+            }
+        }
     };
     //function to dynamically create modal for creating goals
     $scope.showCreateGoal = function(ev) {
@@ -52,26 +57,15 @@ pettycash.controller('GoalsController', function($scope, $mdDialog) {
         $scope.newVal = null;
         $scope.newEnd = null;
         $scope.newPrty = null;
-
-        var selectBox = document.getElementById('goalSelect'); //get goal select box
-        selectBox.options.add(new Option(goalList.newDes, name)); //add new goal to options of select box
     };
     //delete goals
     goalList.delete = function(goal, index) {
         goalList.goals.splice(index, 1); //remove goal from array
         deleteRecord(goal); //delete goal from cloudkit
-
-        var selectBox = document.getElementById('goalSelect'); //get goal select box
-        selectBox.options[index].remove(); //remove deleted goal
     };
     //load goals
     goalList.loadGoals = function() {
         goalList.goals = goals; //assign reference of fetched goals array
-
-        var selectBox = document.getElementById('goalSelect'); //get goal select box
-        angular.forEach(goalList.goals, function(goal) {
-            selectBox.options.add(new Option(goal.description, goal.name)); //add goals to options of select box
-        });
     };
     //check if new goal is valid
     goalList.checkValid = function() {

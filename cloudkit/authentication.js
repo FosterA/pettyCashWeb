@@ -1,4 +1,5 @@
 var user;
+var loggedIn = false;
 // Used for authentication following Apple's standards found in their CloudKitJS documentation
 function setUpAuth() {
     // Get the container.
@@ -14,17 +15,21 @@ function setUpAuth() {
         } else {
             displayUserName('User record name: ' + userIdentity.userRecordName);
         }
-        fetchRecords(); //fetch goals and transactions after login
       }
+      loggedIn = true; //set user as logged in 
+      fetchRecords(); //fetch goals and transactions after login
+        
       container
         .whenUserSignsOut()
-        .then(gotoUnauthenticatedState);
+        .then(function() {location.reload(true);});
     }
     function gotoUnauthenticatedState(error) {
 
       if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
         showDialogForPersistError();
       }
+        
+     //location.reload(true);
 
       displayUserName(' ');
       container

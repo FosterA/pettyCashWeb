@@ -26,13 +26,13 @@
   <!--This is our Home div. It is shown by default but will be hidden if another tab on the nav bar is selected -->
   <!-- We opted for the ng-show/ng-hide implementation because ng-Route would not reload PhaserJS properly when returning home -->
   <div ng-show="NC.currentNavItem == 1">
+    <div layout="row">
+      <span flex="20"></span>
+      <h2>Savings Pet</h2>  
+    </div>  
     <div layout="row" id="petGameDiv">
-      <div flex="30">
-        <h2>Pet Game</h2>
-        <label>Select goal for contribution: </label>
-        <select id="goalSelect"></select>
-      </div>
-      <div flex="60" id="petGame"></div>
+      <div flex="20"></div>
+      <div flex="80" id="petGame"></div>
       <div flex="10"></div>
     </div>
     <!-- Goals and Transactions tables -->
@@ -54,7 +54,7 @@
           <md-content>  
           <md-list>
             <input type="button" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index">
+            <md-list-item class="md-2-line" ng-click="null" ng-repeat="goal in goalList.goals track by $index">
               <i title="hello" id="delete" type="button" ng-click="goalList.delete(goal, $index)" class="material-icons">delete</i>
               <div class="md-list-item-text" layout="column">
                 <h3>{{goal.description}}</h3>
@@ -102,7 +102,7 @@
           <div flex>
             <md-toolbar layout="row" class="md-hue-3">
               <div class="md-toolbar-tools">
-                <span>What you have spent money on.</span>
+                <span>Account Transactions</span>
               </div>
             </md-toolbar>
             <md-content>

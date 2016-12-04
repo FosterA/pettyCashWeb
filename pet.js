@@ -99,9 +99,12 @@ function openWindow() {
 //    }
 //
 //    tweenGrow = game.add.tween(popup.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out, true);
-
-    button.pendingDestroy = true;
-    addBasic('dog');
+    if (!loggedIn) {
+        window.alert("You must be signed-in to interact with your pet");
+    } else {
+        button.pendingDestroy = true;
+        addBasic('dog');
+    }
 
 }
 
