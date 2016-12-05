@@ -12,6 +12,8 @@ function setUpAuth() {
       } else {
         if (userIdentity.userRecordName == '_d3cc4a7081bbbb8d7d7a4307243ec07e') {
             displayUserName("Hello, Josh Osteen");
+        } else if (userIdentity.userRecordName == '_bb5bc7e827f283a4eab12e6ca4abf480') {
+            displayUserName("Hello, Ben Friedman");
         } else {
             displayUserName('User record name: ' + userIdentity.userRecordName);
         }
