@@ -74,6 +74,7 @@ function deleteRecord(removed) {
 // declare arrays for goals and transactions
 var goals = [];
 var transactions = [];
+var expenses = [];
 var tca = 0;
 var dialog = null;
 

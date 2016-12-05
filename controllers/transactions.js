@@ -37,6 +37,9 @@ pettycash.controller('TransactionsController', function($scope, $mdDialog) {
         
         if (upcoming.length > 0) {
             saveRecords(upcoming, 'Transaction'); //save array of transactions
+            
+            var expense = {name: "PettyCash Transfer", date: Date.now(), amount: tca};
+            expenses.push(expense);
         }
         
         transList.setContributions(); //reload current contributions
