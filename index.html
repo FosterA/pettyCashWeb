@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
   <link rel="stylesheet" href="content/css/pettycash.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <!-- Declaring our Angular App and tying in our NavController-->
 <body ng-app="PettyCash" ng-controller="navController as NC" ng-cloak>
@@ -13,8 +14,7 @@
         <div class="md-display-1" id="title">PettyCash</div>
         <md-nav-item md-nav-click="goto('page4')" name="1" value="1">Home</md-nav-item>
         <md-nav-item md-nav-click="goto('page4')" name="2" value="Expenses">Expenses</md-nav-item>
-        <md-nav-item md-nav-click="goto('page3')" name="page3">Analytics</md-nav-item>
-        <md-nav-item md-nav-click="goto('page4')" name="page4">Settings</md-nav-item>
+        <md-nav-item md-nav-click="goto('page4')" name="3" value="LinkAccount">Link Account</md-nav-item>
         <span flex></span>
         <!-- Apple sign in-->
         <md-nav-item name="username" id="displayed-username"></md-nav-item>
@@ -30,7 +30,7 @@
     <md-toolbar id="petToolBar" layout="row" class="md-hue-3">
       <div class="md-toolbar-tools">
         <span>Savings Pet</span>
-      </div>   
+      </div>
     </md-toolbar>
     <div layout-align="center center" layout="row" id="petGameDiv">
       <div id="petGame"></div>
@@ -52,13 +52,13 @@
             <md-subheader class="md-no-sticky">Info</md-subheader>
             <span flex="75"></span>
             <md-subheader class="md-no-stick">Contribution Chart</md-subheader>
-          </div>  
-          <md-content>  
+          </div>
+          <md-content>
           <md-list>
             <input type="button" class="invBtn" id="loadGoals" ng-click="goalList.loadGoals()" value="Load Goals">
-            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index" ng-click="goalList.getTransactions(goal, $event)"> 
+            <md-list-item class="md-2-line" ng-repeat="goal in goalList.goals track by $index" ng-click="goalList.getTransactions(goal, $event)">
               <md-button class="md-primary" ng-click="goalList.delete(goal, $index)">
-                <md-icon title="delete" id="deleteIcon" class="material-icons">delete</md-icon>  
+                <md-icon title="delete" id="deleteIcon" class="material-icons">delete</md-icon>
               </md-button>
               <div class="md-list-item-text" layout="column">
                 <h3>{{goal.description}}</h3>
@@ -76,7 +76,7 @@
             </md-list-item>
             <br>
           </md-list>
-          </md-content>  
+          </md-content>
           </div>
         </div>
         <md-content flex="auto">
@@ -128,6 +128,23 @@
               </div>
           </div>
     </div>
+
+    <!-- link module -->
+    <div class="Aligner" ng-controller="mainCtrl" ng-show="NC.currentNavItem == 3">
+        <md-content class="Aligner-item">
+            <div class="clearfix">
+                <h1 class="pull-left">link your account </h1>
+            </div>
+
+            <div class="row" ng-show="NC.AccountLinked == 0">
+                <div class="col-md-6">
+                    <md-button class="btn btn-success md-primary" ng-click="openPlaid()" ng-disabled="!plaidIsLoaded()">
+                        Select Bank
+                    </md-button>
+                </div>
+            </div>
+        </md-content>
+    </div>
 </body>
   <!--Dependencies  -->
   <!--must include Angular first -->
@@ -153,6 +170,9 @@
   <!-- CloudKit auth and data retrieval -->
   <script src="cloudkit/authentication.js"></script>
   <script src="cloudkit/query.js"></script>
+  <!--Link -->
+  <script src="content/angular-plaid-link.js"></script>
+  <script src="https://cdn.plaid.com/link/stable/link-initialize.js"></script>
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 </html>
