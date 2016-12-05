@@ -133,11 +133,11 @@
     <div class="Aligner" ng-controller="mainCtrl" ng-show="NC.currentNavItem == 3">
         <md-content class="Aligner-item">
             <div class="clearfix">
-                <h1 class="pull-left">link your account </h1>
+                <h1>link your account </h1>
             </div>
 
             <div class="row" ng-show="NC.AccountLinked == 0">
-                <div class="col-md-6">
+                <div class="col-md-6 Aligner-item">
                     <md-button class="btn btn-success md-primary" ng-click="openPlaid()" ng-disabled="!plaidIsLoaded()">
                         Select Bank
                     </md-button>

@@ -44,6 +44,6 @@ var pettycash = angular.module('PettyCash', ['ngMaterial', 'ngMessages', 'ngRout
 
 .controller('navController', function() {
   //setting default home tab value on global controller
-  this.currentNavItem = "3";
+  this.currentNavItem = "1";
   this.AccountLinked = "0";
 });
